@@ -9,6 +9,8 @@
 #include <help.h>
 #include <color.h>
 #include <tpTwoTests.h>
+#include <syscalls.h>
+#include <defs.h>
 
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
@@ -40,7 +42,7 @@ void shell()
 					date();
 					break;
 				case CLEAR:
-					//clear();
+					clear();
 					setUpShell();
 					break;
 				case HELP:
@@ -79,9 +81,11 @@ void shell()
 /*set up the pointer to the las line*/
 void setUpShell()
 {
-	width = (int)_int80(11, 0, 0, 0, 0, 0);
-	height = (int)_int80(11, 1, 0, 0, 0, 0);
-	_int80(12, 0, height - 1 * CHAR_HEIGHT, 0, 0, 0);
+
+	width = get_screen_info(0);
+	height = get_screen_info(1);
+	setPointer(0, height - 1 * CHAR_HEIGHT);
+
 }
 
 /*prints the prompt*/
@@ -313,6 +317,34 @@ int valid(int from,int to,int size)
 	}
 	return 1;
 }
+
+static void print_single_process(int pid)
+{
+  process_info pi;
+  char buffer[MAX_PROCESS_STRING];
+
+  if (get_process_info(pid, &pi))
+	{
+    process_string(&pi, buffer);
+    printf("%s\n", buffer);
+  }
+}
+
+static int ps(int argc, char * argv[])
+{
+  int pid_array[MAX_PROCESSES], i;
+
+  get_current_pids(pid_array);
+
+  for (i = 0; pid_array[i] != -1; i++) {
+    print_single_process(pid_array[i]);
+  }
+
+  return VALID;
+}
+
+
+
 
 // void prodcons() {
 // 	_int80(18,200);//sleep

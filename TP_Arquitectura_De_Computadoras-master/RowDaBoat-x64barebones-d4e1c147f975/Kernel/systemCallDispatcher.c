@@ -88,7 +88,7 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_ppid();
 				break;
 			case 22:
-				//;
+				result = sys_pid();
 				break;
 			case 23:
 				result = sys_openPipe(rdi,rsi);
@@ -127,7 +127,7 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_set_foreground(rdi);
 				break;
 			case 35:
-				//result = sys_process_info_wr(rdi,rsi);
+				result = sys_process_info_wr(rdi,rsi);
 				break;
 			case 36:
 				result = sys_get_semaphore_info_wr(rsi);
@@ -278,7 +278,7 @@ uint64_t sys_allocPage(uint64_t toAlloc)
 
 uint64_t sys_free(uint64_t toFree)
 {
- 	buddyFree(toFree);
+ 	buddyFree((void *) toFree);
 	return 0;
 }
 
@@ -347,15 +347,15 @@ uint64_t sys_yield()
     return 1;
 }
 
-// uint64_t sys_process_info(uint64_t pid, struct process_info_c * pi)
-// {
-// 	return get_process_info_by_pid(pi, pid);
-// }
-//
-// static uint64_t sys_process_info_wr(uint64_t pid, uint64_t pi)
-// {
-// 	return sys_process_info(pid,(struct process_info_c *) pi);
-// }
+uint64_t sys_process_info(uint64_t pid, struct process_info_c * pi)
+{
+	return get_process_info_by_pid(pi, pid);
+}
+
+static uint64_t sys_process_info_wr(uint64_t pid, uint64_t pi)
+{
+	return sys_process_info(pid,(struct process_info_c *) pi);
+}
 
 
 /*------------------------PIPES ----------------------*/
@@ -430,7 +430,7 @@ static uint64_t sys_get_mutexes_info_wr(uint64_t info_array)
 	return sys_get_mutexes_info((mutex_info *) info_array);
 }
 
-uint64_t sys_get_mutexes_info(uint64_t info_array)
+uint64_t sys_get_mutexes_info(mutex_info * info_array)
 {
-	return get_mutexes_info((mutex_info *) info_array);
+	return get_mutexes_info(info_array);
 }

@@ -61,6 +61,6 @@ uint64_t sys_openMutex(uint64_t name);
 uint64_t sys_closeMutex(uint64_t key);
 uint64_t sys_lockMutex(uint64_t key);
 uint64_t sys_unlockMutex(uint64_t key);
-uint64_t sys_get_mutexes_info(uint64_t info_array);
+uint64_t sys_get_mutexes_info(mutex_info * info_array);
 
 #endif

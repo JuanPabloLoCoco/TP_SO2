@@ -110,7 +110,6 @@ int main()
 
 
 	sys_exec((uint64_t)init, 0,"init");
-	draw_word("Esto no deberia IMPRIMIRSE\n");
 	while(1);
 
 	// printAllProcesses();

@@ -3,25 +3,7 @@
 #include <stdlib.h>
 #include <plotter.h>
 #include <stdarg.h>
-extern uint64_t _int80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
-
-/*returns 1 if the given char is a letter, returns 0 if not*/
-int isAlpha(char c)
-{
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
-}
-
-/*returns 1 if the given char is a digit, returns 0 if not*/
-int isNum(char c)
-{
-	return (c >= '0' && c <= '9');
-}
-
-/*returns 1 if the given char is a space, returns 0 if not*/
-int isSpace(char c)
-{
-	return (c == ' ');
-}
+#include <syscalls.h>
 
 /*turns the given integer into a string and stores it in
 ** the given array
@@ -164,14 +146,14 @@ void printf(const char * str,...)
 /* print the given char on screen*/
 void putchar(const char c)
 {
-	_int80((uint64_t)1,(uint64_t)1,(uint64_t)&c,(uint64_t)1,(uint64_t)0,(uint64_t)0);
+	syscall_write(1, &c, 1);
 }
 
 /*reads a char from the buffer and returns it*/
 int getchar()
 {
 	char c;
-	_int80((uint64_t)0,(uint64_t)0,(uint64_t)&c,(uint64_t)1,(uint64_t)0,(uint64_t)0);
+	syscall_read(0,&c,1);
 	return c;
 }
 
@@ -276,17 +258,127 @@ char* readLine()
     return (char *)buff;
 }
 
-uint64_t malloc(uint64_t amount)
-{
-	return _int80(14, amount, 0, 0, 0, 0);
+/* Copia en str los valores ascii de los digitos de value en la base indicada.
+** Devuelve la cantidad de digitos copiados. */
+int itoa(int value, char *str, int base) {
+	char *p = str;
+	char *p1, *p2;
+	int len = 0;
+
+	if(value < 0 && base == 10)
+	{
+		value = -value;
+		len++;
+		*p++ = '-';
+		str++;
+	}
+	//Calculate characters for each digit
+	do
+	{
+		int remainder = value % base;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		len++;
+	}
+	while (value /= base);
+
+	// Terminate string in str.
+	*p = '\0';
+
+	//Reverse string in str.
+	p1 = str;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+
+	return len;
 }
 
-void free(uint64_t address)
+/* A partir de un string retorna su valor entero */
+int atoi(const char *str)
 {
-	_int80(15, address, 0, 0, 0, 0);
+	while (isspace(*str))
+		str++;
+
+	int num = 0;
+	int sign = 1;
+	if (*str == '-')
+	{
+		str++;
+		sign = -1;
+	}
+	else if (*str == '+')
+		str++;
+
+	while (*str != '\0' && isdigit(*str))
+	{
+		num = num * 10 + (*str) - '0';
+		str++;
+	}
+
+	return num * sign;
 }
 
-void ps(uint64_t address, uint64_t amount)
+void * memset(void * destination, int32_t c, uint64_t length)
 {
-	_int80(17, address, amount, 0, 0, 0);
+	uint8_t chr = (uint8_t)c;
+	char * dst = (char*)destination;
+
+	while(length--)
+		dst[length] = chr;
+
+	return destination;
+}
+
+void * memcpy(void * destination, const void * source, uint64_t length)
+{
+	/*
+	* memcpy does not support overlapping buffers, so always do it
+	* forwards. (Don't change this without adjusting memmove.)
+	*
+	* For speedy copying, optimize the common case where both pointers
+	* and the length are word-aligned, and copy word-at-a-time instead
+	* of byte-at-a-time. Otherwise, copy by bytes.
+	*
+	* The alignment logic below should be portable. We rely on
+	* the compiler to be reasonably intelligent about optimizing
+	* the divides and modulos out. Fortunately, it is.
+	*/
+	uint64_t i;
+
+	if ((uint64_t)destination % sizeof(uint32_t) == 0 &&
+		(uint64_t)source % sizeof(uint32_t) == 0 &&
+		length % sizeof(uint32_t) == 0)
+	{
+		uint32_t *d = (uint32_t *) destination;
+		const uint32_t *s = (const uint32_t *)source;
+
+		for (i = 0; i < length / sizeof(uint32_t); i++)
+			d[i] = s[i];
+	}
+	else
+	{
+		uint8_t * d = (uint8_t*)destination;
+		const uint8_t * s = (const uint8_t*)source;
+
+		for (i = 0; i < length; i++)
+			d[i] = s[i];
+	}
+
+	return destination;
+}
+
+void * malloc (int size)
+{
+	return allocMemory(size);
+}
+
+void free(void * ptr)
+{
+	freeMemory(ptr);
 }

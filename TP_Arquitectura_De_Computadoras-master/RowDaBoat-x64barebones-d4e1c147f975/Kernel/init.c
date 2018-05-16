@@ -16,13 +16,10 @@ void _hlt();
 void _sti();
 
 void init() {
-	// initialize_memory_allocator_mutex();
-	// initialize_stack_memory_allocator_mutex();
 	initialize_semaphore();
 	initialize_process_mutex();
 	initIPC();
 
-  draw_word("En proceso Init");
 	_sti();
 	sys_exec((uint64_t)sampleCodeModuleAddress, 0, "shell");
 	set_foreground_process (get_process_by_pid(1));

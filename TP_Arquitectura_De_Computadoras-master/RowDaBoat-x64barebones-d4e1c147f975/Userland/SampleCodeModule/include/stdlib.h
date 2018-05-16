@@ -52,8 +52,8 @@ int scanf(const char* format,...);
 /*reads text from the input until enter and returns what has read*/
 char* readLine(void);
 
-uint64_t malloc(uint64_t amount);
-void free(uint64_t address);
+void * malloc(int amount);
+void free(void * address);
 void ps(uint64_t address, uint64_t amount);
 
 #endif
