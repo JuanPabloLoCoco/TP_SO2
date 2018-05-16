@@ -89,9 +89,8 @@ process * createProcess(uint64_t entryPoint, uint64_t params, char * name)
 {
 	process * newProcess = (process *)buddyAllocate(sizeof(process));
 	newProcess->entry_point = entryPoint;
-	newProcess->stack_base =(uint64_t) buddyAllocatePages(INIT_PROCESS_PAGES);
-	newProcess->cantPages = INIT_PROCESS_PAGES;
-	newProcess->rsp = fill_stack(entryPoint, newProcess->stack_base + newProcess->cantPages * PAGE_SIZE, params);
+	newProcess->stack_page = get_stack_page();
+	newProcess->rsp = fill_stack(entryPoint, newProcess->stack_page, params);
 	newProcess->pid = nextPID++;
 	for(int i=0;i<5;i++)
 	{
@@ -110,7 +109,6 @@ process * createProcess(uint64_t entryPoint, uint64_t params, char * name)
 	}
 
 	insert_process(newProcess);
-	draw_word("Proceso Init se crea con exito\n");
 	return newProcess;
 }
 
@@ -142,8 +140,13 @@ void destroy_process(process * p)
 
 void freeProcess(process * process)
 {
-	buddyFree((void *)process->stack_base);
+	store_stack_page(process->stack_page);
 	buddyFree(process);
+}
+
+void * stack_page_process(process * p)
+{
+	return (void *) p->stack_page;
 }
 
 int kill_process(process * p)
@@ -279,28 +282,28 @@ uint64_t number_processes()
 	return n_processes;
 }
 
-static uint64_t fill_stack(uint64_t entryPoint, uint64_t stack_base, uint64_t params)
+static uint64_t fill_stack(uint64_t entryPoint, uint64_t stack_page, uint64_t params)
 {
-	stack_frame * frame =  (stack_frame *)stack_base  -1;
-	frame->gs =	0x001;
-	frame->fs =	0x002;
-	frame->r15 =	0x001;
-	frame->r14 =	0x002;
-	frame->r13 =	0x003;
-	frame->r12 =	0x004;
-	frame->r11 =	0x005;
-	frame->r10 =	0x006;
-	frame->r9 =		0x007;
-	frame->r8 =		0x008;
-	frame->rsi =	0x009;
+	StackFrame * frame = (StackFrame *) stack_page - 1;
+	frame->gs =		0x001;
+	frame->fs =		0x002;
+	frame->r15 =	0x003;
+	frame->r14 =	0x004;
+	frame->r13 =	0x005;
+	frame->r12 =	0x006;
+	frame->r11 =	0x007;
+	frame->r10 =	0x008;
+	frame->r9 =		0x009;
+	frame->r8 =		0x00A;
+	frame->rsi =	0x00B;
 	frame->rdi =	params;
-	frame->rbp =	0x00B;
-	frame->rdx =	0x00C;
-	frame->rcx =	0x00D;
-	frame->rbx =	0x00E;
-	frame->rax =	0x00F;
+	frame->rbp =	0x00D;
+	frame->rdx =	0x00E;
+	frame->rcx =	0x00F;
+	frame->rbx =	0x010;
+	frame->rax =	0x011;
 	frame->rip =	entryPoint;
-	frame->cs =		0x011;
+	frame->cs =		0x008;
 	frame->eflags = 0x202;
 	frame->rsp =	(uint64_t)&(frame->base);
 	frame->ss = 	0x000;

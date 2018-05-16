@@ -5,12 +5,15 @@
 #include <scheduler.h>
 #include <math.h>
 #include <defs.h>
+#include <dirs.h>
+#include <process.h>
 
 #define MEMBEGIN 0x10000000
 #define MAXMEMORY (128*1024*1024)
 #define MINPAGE (4*1024)
 #define PAGE_SIZE 4*1024
 #define MAXHEAPSIZE (MAXMEMORY/MINPAGE)*2-1
+#define MAX_PROCESSES 128
 
 #define PARENT(i) ((i) >> 1)
 #define LCHILD(i) ((i) << 1)
@@ -18,11 +21,15 @@
 #define AMILEFT(i) !((i) % 2)
 #define ISNAVAILABLE(i,n) ((i)&(myBit(n)))
 
+static uint64_t stack_pages_stack[ MAX_PROCESSES ];
+static uint16_t current_stack_index = 0; /* Apunta al elemento a poppear */
+
 static uint16_t heap[MAXHEAPSIZE];
 static uint64_t heapSize = 0;
 static uint64_t block = 0;
 static void* beginning = (void*) MEMBEGIN;
 static int mutex = 0;
+static uint64_t stack_memory_mutex_key = -1;
 
 void* buddyAllocate(uint64_t amount)
 {
@@ -77,8 +84,6 @@ uint16_t myMask(uint16_t n)
 
 void initializeHeap()
 {
-    printNum(mutex);
-    draw_word("\n");
     block = MINPAGE;
     heapSize = MAXHEAPSIZE;
     recursiveMark(1);
@@ -87,7 +92,21 @@ void initializeHeap()
 void initializeHeapMutex()
 {
   mutex = mutex_open(PAGESMUTEX);
-  draw_word("heap mutex iniciado. Tiene el valor");
+}
+
+void initialize_stack_memory_allocator()
+{
+	int i;
+	for (i = 0; i < MAX_PROCESSES; i++){
+		stack_pages_stack[i] = (i+1) * STACK_PAGE_SIZE + STACK_ADDRESS;
+  }
+    /* Se suma 1 porque el stack crece
+		** hacia direcciones menores */
+}
+
+void initialize_memory_allocator_mutex()
+{
+	stack_memory_mutex_key = mutex_open("__STACK_MEMORY_MUTEX__");
 }
 
 uint16_t recursiveMark(int index)
@@ -103,6 +122,38 @@ uint16_t recursiveMark(int index)
     heap[index] = mark;
     return (mark << 1) + 1;
 }
+
+/* Se ignora el valor de size. Se asume que será menor a PAGE_SIZE.
+** Se hizo así para que la interfaz tenga sentido, en un futuro puede
+** cambiar la implementación a una que si contemple el size correctamente.
+*/
+uint64_t get_stack_page(uint64_t size)
+{
+  mutex_lock(stack_memory_mutex_key);
+	if (current_stack_index < MAX_PROCESSES)
+  {
+		uint64_t page = stack_pages_stack[current_stack_index++];
+		mutex_unlock(stack_memory_mutex_key);
+		return page;
+	}
+	mutex_unlock(stack_memory_mutex_key);
+	return 0;
+
+}
+
+uint64_t store_stack_page(uint64_t address)
+{
+	mutex_lock(stack_memory_mutex_key);
+	if (current_stack_index > 0)
+  {
+		stack_pages_stack[--current_stack_index] = address;
+		mutex_unlock(stack_memory_mutex_key);
+		return 1;
+	}
+	mutex_unlock(stack_memory_mutex_key);
+	return 0;
+}
+
 
 void* addNblocks(unsigned char  n)
 {

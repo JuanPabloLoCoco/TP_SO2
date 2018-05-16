@@ -24,7 +24,7 @@ void get_process_info (process_info * pi, process * p)
 		pi->state = RUNNING;
 	else
 		pi->state = is_blocked_process(p) ? BLOCKED : READY;
-
+	pi->stack_addres = stack_page_process(p);
 	pi->pid = pid_process(p);
 	pi->ppid = ppid_process(p);
 

@@ -102,7 +102,13 @@ int main()
 	draw_word("IDT cargada \n");
 	initializeHeap();
 	draw_word("Heap iniciado Deberia iniciarse metodo init \n");
-	
+	initializeHeapMutex();
+	initialize_stack_memory_allocator();
+	initialize_memory_allocator_mutex();
+	draw_word("Memory Allocator Iniciado \n");
+
+
+
 	sys_exec((uint64_t)init, 0,"init");
 	draw_word("Esto no deberia IMPRIMIRSE\n");
 	while(1);

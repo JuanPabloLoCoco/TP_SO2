@@ -33,13 +33,12 @@ typedef struct {
 	uint64_t rsp;
 	uint64_t ss;
 	uint64_t base;
-} stack_frame;
+} StackFrame;
 
 typedef struct process_t{
 	uint64_t entry_point;		// instruction pointer
-	uint64_t stack_base;		// beggining of stack's pages
+	uint64_t stack_page;		// beggining of stack's pages
 	uint64_t rsp;	// relative to stack_base
-	uint64_t cantPages;
 	processState state;
 	uint64_t pid;
 	uint64_t ppid;
@@ -65,6 +64,7 @@ uint64_t pid_process(process * p);
 uint64_t ppid_process(process * p);
 uint64_t number_processes();
 int get_name_process(char * buffer, process * p);
+void * stack_page_process(process * p);
 
 void block_process(process * p);
 void unblock_process(process * p);

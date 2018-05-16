@@ -146,8 +146,6 @@ _lidt:				; Carga el IDTR
   pop     rbp
   retn
 
-
-
 ;8254 Timer (Timer Tick)
 _irq00Handler:
 	pushState

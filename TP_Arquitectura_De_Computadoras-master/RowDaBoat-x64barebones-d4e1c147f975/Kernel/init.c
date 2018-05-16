@@ -18,7 +18,6 @@ void _sti();
 void init() {
 	// initialize_memory_allocator_mutex();
 	// initialize_stack_memory_allocator_mutex();
-	initializeHeapMutex();
 	initialize_semaphore();
 	initialize_process_mutex();
 	initIPC();

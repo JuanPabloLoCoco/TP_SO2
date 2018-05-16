@@ -51,19 +51,14 @@ static void unlock_array()
 int mutex_open(char * name)
 {
   int k = 0;
-
-  draw_word("Entra a mutex open \n ");
-  lock_array();
-  draw_word ("Lockea Array");
-
-  // for (; k < MAX_MUTEXES && is_open(k); k++)
-  // {
-  //   if (strcmp(name, open_mutexes[k].name) == 0)
-  //   {
-  //     unlock_array();
-  //     return k;
-  //   }
-  // }
+  for (; k < MAX_MUTEXES && is_open(k); k++)
+  {
+    if (strcmp(name, open_mutexes[k].name) == 0)
+    {
+      unlock_array();
+      return k;
+    }
+  }
 
   if (k == MAX_MUTEXES)
   {
@@ -72,7 +67,6 @@ int mutex_open(char * name)
   }
   open_mutexes[k] = create_new_mutex(name);
   unlock_array();
-  draw_word("Logra Crear Mutex. Unlockea Mutex\n");
   return k;
 }
 
