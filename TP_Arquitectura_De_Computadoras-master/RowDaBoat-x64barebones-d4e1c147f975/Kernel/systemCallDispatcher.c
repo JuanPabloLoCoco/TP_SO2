@@ -135,6 +135,9 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 			case 37:
 				result = sys_get_mutexes_info_wr(rsi);
 				break;
+			case 38:
+				result = sys_closeSemaphore(rsi);
+				break;
 		}
 		return result;
 }
@@ -166,6 +169,11 @@ uint64_t sys_read(uint64_t fd, char* destination, uint64_t count)
 			}
 		}
   }
+	else if (fd > 2 && fd < 8)
+	{
+			pipe_t pipe = get_process_by_pid(get_current_process())->fd[fd-3];
+			readPipe(pipe, destination, count);
+	}
   return i;
 }
 
@@ -182,6 +190,11 @@ uint64_t sys_write(unsigned int fd, const char* buffer, uint64_t count)
 				draw_char(buffer[i]);
 			i++;
 		}
+	}
+	else if (fd > 2 && fd < 8)
+	{
+		pipe_t pipe = get_process_by_pid(get_current_process())->fd[fd-3];
+		writPipe(pipe, destination, count);
 	}
 	return i;
 }
@@ -401,6 +414,11 @@ static uint64_t sys_get_semaphore_info_wr(uint64_t info_array)
 uint64_t sys_get_semaphore_info(semaphore_info info_array[])
 {
 	return get_semaphore_info(info_array);
+}
+
+uint64_t sys_closeSemaphore(uint64_t key)
+{
+	return semaphore_close((int) key)
 }
 
 /*------------------------MUTEX ----------------------*/

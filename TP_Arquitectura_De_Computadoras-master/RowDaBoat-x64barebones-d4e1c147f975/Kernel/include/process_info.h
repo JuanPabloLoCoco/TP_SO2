@@ -13,6 +13,7 @@ typedef struct process_info_c {
 	uint64_t ppid;
 	void * stack_addres;
 	char name [MAX_PROCESS_NAME];
+	pipe_t fd[5];
 }process_info;
 
 /* Copia la información de un proceso a la estructura pública process_info.

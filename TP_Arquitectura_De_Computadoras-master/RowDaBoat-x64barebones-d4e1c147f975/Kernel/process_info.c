@@ -3,6 +3,7 @@
 #include <process.h>
 #include <scheduler.h>
 
+
 int get_process_info_by_pid(process_info * pi, uint64_t pid)
 {
 	process * p = get_process_by_pid(pid);
@@ -27,7 +28,6 @@ void get_process_info (process_info * pi, process * p)
 	pi->stack_addres = stack_page_process(p);
 	pi->pid = pid_process(p);
 	pi->ppid = ppid_process(p);
-
 	get_name_process(pi->name, p);
 
 	unassign_quantum();

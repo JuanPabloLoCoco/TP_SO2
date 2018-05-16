@@ -11,7 +11,7 @@
 #include <tpTwoTests.h>
 #include <syscalls.h>
 #include <defs.h>
-
+#include <syscalls.h>
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
 char command [COMMAND_MAX_LENGTH];

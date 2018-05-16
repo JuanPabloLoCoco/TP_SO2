@@ -260,7 +260,8 @@ char* readLine()
 
 /* Copia en str los valores ascii de los digitos de value en la base indicada.
 ** Devuelve la cantidad de digitos copiados. */
-int itoa(int value, char *str, int base) {
+int itoa(int value, char *str, int base)
+{
 	char *p = str;
 	char *p1, *p2;
 	int len = 0;

@@ -1,19 +1,18 @@
 #include <plotter.h>
 #include <stdint.h>
 #include <stdlib.h>
-
-extern uint64_t _int80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
+#include <syscalls.h>
 
   /*draws a pixel in the given position with the given color*/
 	void draw_pixel_with_color(int x, int y,Color color)
-  {
-        _int80(8,x,y,color.blue,color.green,color.red);//llamar a la SysCall que corresponde a pintar el pixel;
+	{
+				sys_paint(x , y , color.blue , color.green , color.red );
 	}
 
   /*draws a pixel in the given position*/
 	void draw_pixel(int x, int y)
   {
-    	_int80(8,x,y,0,0,0);//llamar a la Syscall que corresponde al pixel
+    	sys_paint(x,y, 0, 0, 0);
   }
 
   /*draws and horizontal line from the x0 collumn to the x1 collumn in the y row*/
@@ -74,42 +73,43 @@ extern uint64_t _int80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, u
       draw_verticalTotalLine(x0);
       int y0 = height/2;
       draw_horizontalTotalLine(y0);
-      _int80(10,'1',width/2+100,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'2',width/2+200,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'3',width/2+300,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'4',width/2+400,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'5',width/2+500,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'1',width/2-100,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'2',width/2-200,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'3',width/2-300,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'4',width/2-400,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'5',width/2-500,height/2 +CHAR_HEIGHT,0,0);
-      _int80(10,'1',width/2-CHAR_WIDTH,height/2 -100,0,0);
-      _int80(10,'2',width/2-CHAR_WIDTH,height/2 -200,0,0);
-      _int80(10,'3',width/2-CHAR_WIDTH,height/2 -300,0,0);
-      _int80(10,'4',width/2-CHAR_WIDTH,height/2 -400,0,0);
-      _int80(10,'5',width/2-CHAR_WIDTH,height/2 -500,0,0);
-      _int80(10,'1',width/2-CHAR_WIDTH,height/2 +100,0,0);
-      _int80(10,'2',width/2-CHAR_WIDTH,height/2 +200,0,0);
-      _int80(10,'3',width/2-CHAR_WIDTH,height/2 +300,0,0);
-      _int80(10,'4',width/2-CHAR_WIDTH,height/2 +400,0,0);
-      _int80(10,'5',width/2-CHAR_WIDTH,height/2 +500,0,0);
+			sys_drawCharPosition('1', width/2 + 100, height/2 +CHAR_HEIGHT );
+			sys_drawCharPosition('2', width/2 + 200, height/2 +CHAR_HEIGHT );
+			sys_drawCharPosition('3', width/2 + 300, height/2 +CHAR_HEIGHT );
+      sys_drawCharPosition('3',width/2+300,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('4',width/2+400,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('5',width/2+500,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('1',width/2-100,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('2',width/2-200,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('3',width/2-300,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('4',width/2-400,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('5',width/2-500,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition('1',width/2-CHAR_WIDTH,height/2 -100);
+      sys_drawCharPosition('2',width/2-CHAR_WIDTH,height/2 -200);
+      sys_drawCharPosition('3',width/2-CHAR_WIDTH,height/2 -300);
+      sys_drawCharPosition('4',width/2-CHAR_WIDTH,height/2 -400);
+      sys_drawCharPosition('5',width/2-CHAR_WIDTH,height/2 -500);
+      sys_drawCharPosition('1',width/2-CHAR_WIDTH,height/2 +100);
+      sys_drawCharPosition('2',width/2-CHAR_WIDTH,height/2 +200);
+      sys_drawCharPosition('3',width/2-CHAR_WIDTH,height/2 +300);
+      sys_drawCharPosition('4',width/2-CHAR_WIDTH,height/2 +400);
+      sys_drawCharPosition('5',width/2-CHAR_WIDTH,height/2 +500);
    }
 
   /*clears the screen*/
   void cls()
   {
-     	_int80(9,0,0,0,0,0);
+     	clear;
  	}
 
   /*returns the screen width*/
   uint64_t getScreenWidht()
   {
-    return _int80(11,0,0,0,0,0);
+    return get_screen_info(0);
   }
 
   /*returns the screen height*/
   uint64_t getScreenHeight()
   {
-    return _int80(11,1,0,0,0,0);
+    return get_screen_info(1);
   }

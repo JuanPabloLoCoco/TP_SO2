@@ -122,6 +122,20 @@ int semaphore_broadcast(int key)
 	return NOT_OPEN_ERROR;
 }
 
+int semaphore_close(int key)
+{
+  if (is_open(key))
+  {
+    semaphore * v = &open_semaphore[key];
+    semaphore_broadcast(key);
+    destroy_queue(v->process_queue);
+    mutex_close(v->lock_queue);
+    v->state = CLOSED;
+    return 1;
+  }
+  return NOT_OPEN_ERROR;
+}
+
 static void sync_enqueue(semaphore * v, process * p)
 {
 	mutex_lock(v->lock_queue);

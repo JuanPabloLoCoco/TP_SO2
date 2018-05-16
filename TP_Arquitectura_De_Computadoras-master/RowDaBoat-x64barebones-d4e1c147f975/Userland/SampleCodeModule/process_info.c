@@ -9,10 +9,13 @@
 #define MEM_ADDR "Memory Address: "
 #define PPID "PPID"
 
+static char * state[] = {"RUNNING", "READY", "BLOCKED"};
+
 static int strcpysep (char * to, const char * source, char separator);
 
 
-int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING]) {
+int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING])
+{
 	int i = 0;
 	char * ground = p->is_foreground ? FOREGROUND : BACKGROUND;
 
@@ -30,7 +33,7 @@ int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING]) {
 
 	i += strcpysep(buffer + i, ground, SEPARATOR); /* [background|foregound] */
 
-	i += strcpysep(buffer + i, state[(int)p->st], SEPARATOR); /* [RUNNING|READY|BLOCKED]*/
+	i += strcpysep(buffer + i, state[(int)p->state], SEPARATOR); /* [RUNNING|READY|BLOCKED]*/
 
 	i += strcpysep(buffer + i, STACK_ADDR, SEPARATOR);
 
@@ -38,25 +41,7 @@ int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING]) {
 
 	buffer[i++] = SEPARATOR;
 
-	if (has_mem_pages(p))
-	{
-		int j;
-
-		i += strcpysep(buffer + i, MEM_ADDR, SEPARATOR);
-
-		for (j = 0; p->mem_pages[j] != NULL; j++)
-		{
-			i += itoa((uint64_t)p->mem_pages[j], buffer + i, 16);
-			if (p->mem_pages[j+1] != NULL)
-			{
-				buffer[i++] = ',';
-				buffer[i++] = ' ';
-			}
-		}
-	}
-
 	buffer[i] = '\0';
-
 	return i;
 }
 

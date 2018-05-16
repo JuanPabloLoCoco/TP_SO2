@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
-
 void testDualAllocation()
 {
 	printf("Testeo doble creacion:\n");

@@ -8,6 +8,14 @@
 
 #define MAX_PROCESSES 128
 
+#define SEPARATOR ' '
+#define FOREGROUND "foreground"
+#define BACKGROUND "background"
+#define STACK_ADDR "Stack Address: "
+#define MEM_ADDR "Memory Address: "
+#define PPID "PPID"
+
+typedef enum processState_t {RUNNING, READY, BLOCKED, BLOCKED_READ, DEAD, BLOCKED_FOREGROUND} processState;
 
 typedef struct process_info_c {
 	char is_foreground;
