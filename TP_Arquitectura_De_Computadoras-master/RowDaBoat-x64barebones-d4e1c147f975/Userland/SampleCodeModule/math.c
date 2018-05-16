@@ -1,4 +1,3 @@
-}
 #include "include/math.h"
 
 static unsigned long int next = 1;

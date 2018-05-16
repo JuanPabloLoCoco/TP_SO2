@@ -3,14 +3,15 @@
 #include <prodCons.h>
 #include <math.h>
 
-int olvidameVersionSO(){
+void olvidameVersionSO(){
     void** parg = (void**)malloc(sizeof(void*) * 2);
+    void** parg2 = (void**)malloc(sizeof(void*) * 2);
     exec(&student, parg, "student");
-    exec(&so, parg, "so");
+    exec(&so, parg2, "so");
 }
 
 
-int student(){
+void student(){
     char* msgs[4]={
             "¿Quien es?",
             "¿Que vienes a buscar?",
@@ -22,28 +23,27 @@ int student(){
     int so=openPipe("SOToStudent");
 
     sleep(randBound(1000,5000));
-    write(so,msgs[0],strlen(msgs[0])+1);
-    read(me,buffer,99);
+    syscall_write(so,msgs[0],strlen(msgs[0])+1);
+    syscall_read(me,buffer,99);
     printf("SO: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(so,msgs[1],strlen(msgs[1])+1);
-    read(me,buffer,99);
+    syscall_write(so,msgs[1],strlen(msgs[1])+1);
+    syscall_read(me,buffer,99);
     printf("SO: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(so,msgs[2],strlen(msgs[2])+1);
-    read(me,buffer,99);
+    syscall_write(so,msgs[2],strlen(msgs[2])+1);
+    syscall_read(me,buffer,99);
     printf("SO: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(so,msgs[3],strlen(msgs[3])+1);
-    read(me,buffer,99);
+    syscall_write(so,msgs[3],strlen(msgs[3])+1);
+    syscall_read(me,buffer,99);
     printf("SO: %s\n",buffer);
     closePipe("StudentToSO");
     closePipe("SOToStudent");
-
 }
 
 
-int joaquin(){
+void so(){
     char* msgs[4]={
             "Soy SO",
             "Tu TP",
@@ -53,24 +53,22 @@ int joaquin(){
     char buffer[100]={0};
     int student=openPipe("StudentToSO");
     int me=openPipe("SOToStudent");
-    read(me,buffer,99);
+    syscall_read(me,buffer,99);
     printf("Student: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(student,msgs[0],strlen(msgs[0])+1);
-    read(me,buffer,99);
+    syscall_write(student,msgs[0],strlen(msgs[0])+1);
+    syscall_read(me,buffer,99);
     printf("Student: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(student,msgs[1],strlen(msgs[1])+1);
-    read(me,buffer,99);
+    syscall_write(student,msgs[1],strlen(msgs[1])+1);
+    syscall_read(me,buffer,99);
     printf("Student: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(student,msgs[2],strlen(msgs[2])+1);
-    read(me,buffer,99);
+    syscall_write(student,msgs[2],strlen(msgs[2])+1);
+    syscall_read(me,buffer,99);
     printf("Student: %s\n",buffer);
     sleep(randBound(1000,5000));
-    write(student,msgs[3],strlen(msgs[3])+1);
+    syscall_write(student,msgs[3],strlen(msgs[3])+1);
     closePipe("StudentToSO");
     closePipe("SOToStudent");
-
-
 }
