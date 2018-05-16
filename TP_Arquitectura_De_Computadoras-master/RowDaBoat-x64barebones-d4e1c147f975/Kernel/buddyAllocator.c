@@ -77,13 +77,17 @@ uint16_t myMask(uint16_t n)
 
 void initializeHeap()
 {
-    mutex = mutex_open(PAGESMUTEX);
-    draw_word("heap mutex iniciado. Tiene el valor");
     printNum(mutex);
     draw_word("\n");
     block = MINPAGE;
     heapSize = MAXHEAPSIZE;
     recursiveMark(1);
+}
+
+void initializeHeapMutex()
+{
+  mutex = mutex_open(PAGESMUTEX);
+  draw_word("heap mutex iniciado. Tiene el valor");
 }
 
 uint16_t recursiveMark(int index)

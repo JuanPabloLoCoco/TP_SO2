@@ -70,15 +70,9 @@ uint64_t exec(process * newProcess)
 {
 	int pid;
 	add_process(newProcess);
-	draw_word("el proceso se añade al scheduler\n");
 	pid = pid_process(newProcess);
-	draw_word("El pid de mi proceso es el ...");
-	printNum(pid);
-	draw_word("\n");
-
 	if (pid == 0)
 	{
-		draw_word ("Entra a pid == 0\n");
 		_change_process(get_rsp_process(current->process));
 	}
 	return pid;
@@ -86,8 +80,7 @@ uint64_t exec(process * newProcess)
 
 static void add_process(process * p)
 {
-	processSlot * new_slot = (processSlot *)buddyAllocate(sizeof(*new_slot));
-	draw_word("Espacio para slot agregado\n");
+	processSlot * new_slot = (processSlot *)buddyAllocate(sizeof(* new_slot));
 	new_slot->process = p;
 	new_slot->quantum = QUANTUM;
 
@@ -104,7 +97,6 @@ static void add_process(process * p)
 		current->next = new_slot;
 	}
 	unset_superlock();
-
 }
 
 void yield_process()

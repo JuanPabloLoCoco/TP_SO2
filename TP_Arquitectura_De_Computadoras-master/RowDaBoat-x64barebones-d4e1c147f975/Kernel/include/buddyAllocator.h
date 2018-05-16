@@ -9,6 +9,7 @@
 #define PAGE_SIZE 4*1024
 
 void initializeHeap();
+void initializeHeapMutex();
 void* buddyAllocatePages(uint64_t pages);
 void* buddyAllocate(uint64_t amount);
 uint16_t myBit(uint16_t n);

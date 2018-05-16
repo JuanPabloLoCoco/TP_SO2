@@ -91,7 +91,7 @@ process * createProcess(uint64_t entryPoint, uint64_t params, char * name)
 	newProcess->entry_point = entryPoint;
 	newProcess->stack_base =(uint64_t) buddyAllocatePages(INIT_PROCESS_PAGES);
 	newProcess->cantPages = INIT_PROCESS_PAGES;
-	newProcess->stack_pointer = fill_stack(entryPoint, newProcess->stack_base + newProcess->cantPages * PAGE_SIZE, params);
+	newProcess->rsp = fill_stack(entryPoint, newProcess->stack_base + newProcess->cantPages * PAGE_SIZE, params);
 	newProcess->pid = nextPID++;
 	for(int i=0;i<5;i++)
 	{
@@ -168,7 +168,7 @@ void set_rsp_process(process * p, uint64_t rsp)
 {
 	if (p != NULL)
 	{
-		p->stack_pointer = rsp;
+		p->rsp = rsp;
 	}
 }
 
@@ -176,7 +176,7 @@ uint64_t get_rsp_process(process * p)
 {
 	if (p != NULL)
 	{
-		return p->stack_pointer;
+		return p->rsp;
 	}
 	return -1;
 }
@@ -281,7 +281,7 @@ uint64_t number_processes()
 
 static uint64_t fill_stack(uint64_t entryPoint, uint64_t stack_base, uint64_t params)
 {
-	stack_frame * frame =  (stack_frame *)(stack_base - sizeof(stack_frame) -1);
+	stack_frame * frame =  (stack_frame *)stack_base  -1;
 	frame->gs =	0x001;
 	frame->fs =	0x002;
 	frame->r15 =	0x001;

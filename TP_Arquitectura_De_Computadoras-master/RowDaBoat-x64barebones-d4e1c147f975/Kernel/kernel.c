@@ -101,12 +101,8 @@ int main()
 	//((EntryPoint)sampleCodeModuleAddress)();
 	draw_word("IDT cargada \n");
 	initializeHeap();
-	draw_word("Heap iniciado \n");
-
-	initialize_semaphore();
-	draw_word("Semaforos inicializados \n");
-	initIPC();
-
+	draw_word("Heap iniciado Deberia iniciarse metodo init \n");
+	
 	sys_exec((uint64_t)init, 0,"init");
 	draw_word("Esto no deberia IMPRIMIRSE\n");
 	while(1);

@@ -6,6 +6,9 @@
 #include <videoDriver.h>
 #include <mutex.h>
 #include <interrupts.h>
+#include <buddyAllocator.h>
+#include <pipe.h>
+#include <semaphore.h>
 
 static void * const sampleCodeModuleAddress = (void *) CODE_ADDRESS;
 
@@ -15,7 +18,11 @@ void _sti();
 void init() {
 	// initialize_memory_allocator_mutex();
 	// initialize_stack_memory_allocator_mutex();
+	initializeHeapMutex();
+	initialize_semaphore();
 	initialize_process_mutex();
+	initIPC();
+
   draw_word("En proceso Init");
 	_sti();
 	sys_exec((uint64_t)sampleCodeModuleAddress, 0, "shell");

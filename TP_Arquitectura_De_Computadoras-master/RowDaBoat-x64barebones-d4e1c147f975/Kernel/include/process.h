@@ -38,7 +38,7 @@ typedef struct {
 typedef struct process_t{
 	uint64_t entry_point;		// instruction pointer
 	uint64_t stack_base;		// beggining of stack's pages
-	uint64_t stack_pointer;	// relative to stack_base
+	uint64_t rsp;	// relative to stack_base
 	uint64_t cantPages;
 	processState state;
 	uint64_t pid;
