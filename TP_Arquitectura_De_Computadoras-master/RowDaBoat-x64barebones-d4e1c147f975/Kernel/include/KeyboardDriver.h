@@ -3,6 +3,7 @@
 
 #define BUFFERSIZE 128
 #define ESCAPE 1
+#define BACKSPACECODE 14
 
 char getKey(void);
 void keyboard_handler();

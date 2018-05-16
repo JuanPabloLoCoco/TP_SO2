@@ -332,7 +332,7 @@ static void print_single_process(int pid)
   }
 }
 
-static int ps(int argc, char * argv[])
+static int ps()
 {
   int pid_array[MAX_PROCESSES], i;
 

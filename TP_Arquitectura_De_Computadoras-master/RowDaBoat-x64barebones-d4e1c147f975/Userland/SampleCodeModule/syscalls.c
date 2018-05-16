@@ -14,7 +14,7 @@ int syscall_read(unsigned int fd, void * buffer, int bytes)
 /* SystemCall Write */
 int syscall_write(unsigned int fd, const void *buffer, unsigned int bytes)
 {
-    return _int80((uint64_t)1,(uint64_t)fd,(uint64_t)&buffer,(uint64_t)bytes,(uint64_t)0,(uint64_t)0);
+    return _int80((uint64_t)1,(uint64_t)fd,(uint64_t)buffer,(uint64_t)bytes,(uint64_t)0,(uint64_t)0);
 }
 
 int get_seconds()
