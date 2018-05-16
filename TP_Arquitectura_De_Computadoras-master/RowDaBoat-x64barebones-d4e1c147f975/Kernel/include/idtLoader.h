@@ -17,6 +17,11 @@ typedef struct {
               other_cero;
 } DESCR_INT;
 
+typedef struct {
+  uint16_t  limit;
+  uint64_t base;
+} IDTR;
+
 #pragma pack(pop)
 
 #endif
