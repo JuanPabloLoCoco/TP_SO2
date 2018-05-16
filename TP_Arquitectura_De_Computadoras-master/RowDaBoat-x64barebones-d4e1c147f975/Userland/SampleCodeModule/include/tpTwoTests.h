@@ -3,6 +3,5 @@
 
 void testOne();
 void testTwo();
-void testPS();
 
 #endif

@@ -22,7 +22,7 @@ typedef struct process_info_c {
 	char state;
 	uint64_t pid;
 	uint64_t ppid;
-	void * stack_addres;
+	void * stack_address;
 	char name [MAX_PROCESS_NAME];
 }process_info;
 

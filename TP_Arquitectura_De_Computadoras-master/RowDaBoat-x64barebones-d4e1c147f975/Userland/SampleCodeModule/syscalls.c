@@ -2,6 +2,7 @@
 #include <syscalls.h>
 #include <stdlib.h>
 #include <ipc_info.h>
+
 extern uint64_t _int80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
 /* SystemCall Read */
@@ -88,117 +89,117 @@ void freeMemory(void * address)
 
 void end()
 {
-  _int80h(16, 0, 0, 0, 0, 0);
+  _int80(16, 0, 0, 0, 0, 0);
 }
 
-void sleep(int milliseconds);
+void sleep(int milliseconds)
 {
 	_int80(17, (uint64_t) milliseconds, 0, 0, 0, 0);
 }
 
 void yield()
 {
-  _int80h(18, 0, 0, 0, 0, 0 );
+  _int80(18, 0, 0, 0, 0, 0 );
 }
 
 int kill(int pid)
 {
-  return (int)_int80h(19,(uint64_t) pid, 0, 0, 0, 0);
+  return (int)_int80(19,(uint64_t) pid, 0, 0, 0, 0);
 }
 
 int exec(void * ptr, uint64_t params, const char * name)
 {
-  return _int80h(20, (uint64_t) ptr, params, (uint64_t) name, 0 , 0 );
+  return _int80(20, (uint64_t) ptr, params, (uint64_t) name, 0 , 0 );
 }
 
 int ppid()
 {
-  return _int80h(21, 0, 0, 0, 0, 0);
+  return _int80(21, 0, 0, 0, 0, 0);
 }
 
 int pid()
 {
-  return _int80h(22, 0, 0, 0, 0, 0);
+  return _int80(22, 0, 0, 0, 0, 0);
 }
 
 int openPipe(char * name)
 {
 	int fd;
-	int80(23, name, &fd, 0, 0, 0);
+	_int80(23, name, &fd, 0, 0, 0);
 	return fd;
 }
 
 void closePipe(char * name)
 {
-	int80(24,(uint64_t) name, 0, 0, 0, 0);
+	_int80(24,(uint64_t) name, 0, 0, 0, 0);
 }
 
 int semaphore_signal(int key)
 {
-  return _int80h(25,(uint64_t)key, 0, 0, 0 , 0);
+  return _int80(25,(uint64_t)key, 0, 0, 0 , 0);
 }
 
 int semaphore_wait(int semaphore_key, int lock_key)
 {
-  return _int80h(26,(uint64_t) semaphore_key,(uint64_t) lock_key, 0,0,0);
+  return _int80(26,(uint64_t) semaphore_key,(uint64_t) lock_key, 0,0,0);
 }
 
 int semaphore_open(char * name)
 {
-  return _int80h(27, (uint64_t) name, 0, 0, 0, 0);
+  return _int80(27, (uint64_t) name, 0, 0, 0, 0);
 }
 
 int semaphore_broadcast(int key)
 {
-  return _int80h(28,(uint64_t)key, 0, 0, 0, 0);
+  return _int80(28,(uint64_t)key, 0, 0, 0, 0);
 }
 
 int mutex_lock(int key)
 {
-  return _int80h(29, (uint64_t) key, 0, 0, 0, 0);
+  return _int80(29, (uint64_t) key, 0, 0, 0, 0);
 }
 
 int mutex_unlock(int key)
 {
-  return _int80h(30, (uint64_t) key, 0, 0, 0, 0);
+  return _int80(30, (uint64_t) key, 0, 0, 0, 0);
 }
 
 int mutex_open(char * name)
 {
-  return _int80h(31, (uint64_t) name, 0, 0, 0, 0);
+  return _int80(31, (uint64_t) name, 0, 0, 0, 0);
 }
 
 int mutex_close(int key)
 {
-  return _int80h(32, (uint64_t) key, 0, 0, 0, 0);
+  return _int80(32, (uint64_t) key, 0, 0, 0, 0);
 }
 
 int get_current_pids(int * pid_array)
 {
-  return _int80h(33, (uint64_t) pid_array, 0, 0, 0, 0);
+  return _int80(33, (uint64_t) pid_array, 0, 0, 0, 0);
 }
 
 int set_foreground(int pid)
 {
-  return (int)_int80h(34, (uint64_t) pid, 0, 0, 0, 0);
+  return (int)_int80(34, (uint64_t) pid, 0, 0, 0, 0);
 }
 
 int get_process_info(int pid, struct process_info_c * pi)
 {
-  return (int)_int80h(35,(uint64_t) pid, (uint64_t) pi, 0, 0, 0);
+  return (int)_int80(35,(uint64_t) pid, (uint64_t) pi, 0, 0, 0);
 }
 
 int get_semaphore_info(semaphore_info info_array[])
 {
-  return _int80h(36, (uint64_t) info_array, 0, 0, 0, 0);
+  return _int80(36, (uint64_t) info_array, 0, 0, 0, 0);
 }
 
 int get_mutexes_info(mutex_info info_array[])
 {
-  return _int80h(37, (uint64_t) info_array, 0, 0, 0 , 0);
+  return _int80(37, (uint64_t) info_array, 0, 0, 0 , 0);
 }
 
 int semaphore_close(int key)
 {
-  return _int80h(38, key, 0, 0, 0, 0);
+  return _int80(38, key, 0, 0, 0, 0);
 }

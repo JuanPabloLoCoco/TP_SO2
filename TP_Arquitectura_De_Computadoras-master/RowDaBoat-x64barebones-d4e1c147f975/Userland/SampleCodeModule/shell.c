@@ -5,13 +5,13 @@
 #include <date.h>
 #include <echo.h>
 #include <time.h>
-#include <clear.h>
 #include <help.h>
-#include <color.h>
 #include <tpTwoTests.h>
 #include <syscalls.h>
 #include <defs.h>
 #include <syscalls.h>
+#include <ctype.h>
+
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
 char command [COMMAND_MAX_LENGTH];
@@ -19,6 +19,8 @@ char args[COMMANDS_MAX_ARGS+1];
 int functionArgs[MAX_QUADRATIC_INTS];
 int width = 0;
 int height = 0;
+
+static int ps(int argc, char * argv[]);
 
 void shell()
 {
@@ -247,7 +249,7 @@ int getInts(int totalArgs)
 	int sign = 0;
 	for(i = 0; args[i]; i++)
 	{
-		if(args[i] != ' ' && !isNum(args[i]))
+		if(args[i] != ' ' && !isdigit(args[i]))
 		{
 			if(args[i] == '-')
 			{
@@ -258,7 +260,7 @@ int getInts(int totalArgs)
 				return MAX_QUADRATIC_INTS + 1;
 			}
 		}
-		else if(isNum(args[i]))
+		else if(isdigit(args[i]))
 		{
 			if(j < totalArgs)
 			{
@@ -280,7 +282,7 @@ int getInts(int totalArgs)
 int getNumber(char* args, int* pos)
 {
 	int num = 0;
-	while(isNum(args[*pos]))
+	while(isdigit(args[*pos]))
 	{
 		num = num * 10 + (args[*pos] - 48);
 		(*pos)++;
@@ -340,7 +342,7 @@ static int ps(int argc, char * argv[])
     print_single_process(pid_array[i]);
   }
 
-  return VALID;
+  return 1;
 }
 
 

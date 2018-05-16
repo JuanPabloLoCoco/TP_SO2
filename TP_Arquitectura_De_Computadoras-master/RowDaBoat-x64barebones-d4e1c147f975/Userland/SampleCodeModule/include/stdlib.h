@@ -8,9 +8,6 @@
 /*returns 1 if the given char is a letter, returns 0 if not*/
 int isAlpha(char c);
 
-/*returns 1 if the given char is a digit, returns 0 if not*/
-int isNum(char c);
-
 /*returns 1 if the given char is a space, returns 0 if not*/
 int isSpace(char c);
 
@@ -54,6 +51,5 @@ char* readLine(void);
 
 void * malloc(int amount);
 void free(void * address);
-void ps(uint64_t address, uint64_t amount);
 
 #endif

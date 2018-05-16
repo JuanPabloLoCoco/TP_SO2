@@ -18,9 +18,6 @@ typedef struct semaphore_info {
 	int key;
 } semaphore_info;
 
-void print_ipc_info();
-void print_conds_info(cond_info info_array[], int count);
+void print_semaphore_info(semaphore_info info_array[], int count);
 void print_mutexes_info(mutex_info info_array[], int count);
-void print_fifos_info(fifo_info info_array[], int count);
-
 #endif

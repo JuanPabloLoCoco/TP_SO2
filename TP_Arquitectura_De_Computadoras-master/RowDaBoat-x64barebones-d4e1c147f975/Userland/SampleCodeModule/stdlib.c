@@ -198,7 +198,7 @@ int scanf(const char* format,...)
 				case 'd':
 					number = va_arg(args,int*);
 					*number = 0;
-					while(isNum(read[j]))
+					while(isdigit(read[j]))
 					{
 						*number = (*number) *10 + read[j] - 48;
 						j++;
@@ -323,17 +323,6 @@ int atoi(const char *str)
 	}
 
 	return num * sign;
-}
-
-void * memset(void * destination, int32_t c, uint64_t length)
-{
-	uint8_t chr = (uint8_t)c;
-	char * dst = (char*)destination;
-
-	while(length--)
-		dst[length] = chr;
-
-	return destination;
 }
 
 void * memcpy(void * destination, const void * source, uint64_t length)

@@ -55,6 +55,7 @@ uint64_t sys_waitSemaphore(uint64_t semaphore_key, uint64_t lock_key);
 uint64_t sys_signalSemaphore(uint64_t key);
 uint64_t sys_openSemaphore(uint64_t name);
 uint64_t sys_broadcastSemaphore(uint64_t key);
+uint64_t sys_closeSemaphore(uint64_t key);
 uint64_t sys_get_semaphore_info(semaphore_info info_array[]);
 
 uint64_t sys_openMutex(uint64_t name);

@@ -32,14 +32,3 @@ void testFree()
 		printf("Distintos lugares. Mal free\n");
 	}
 }
-
-void testPS()
-{
-	char * address = malloc(3000);
-	ps(address, 3000);
-	printf("%s\n",address );
-	free(address);
-	int l;
-	printf("Presione q para volver\n");
-	while((l = getchar()) != 'q');
-}
