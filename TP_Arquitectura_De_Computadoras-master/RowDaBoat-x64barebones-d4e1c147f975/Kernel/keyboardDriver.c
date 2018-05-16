@@ -30,17 +30,20 @@ void keyboard_handler()
     set_foreground_force_process(get_process_by_pid(ppid_process(get_foreground_process())));
     return;
   }
+
   if (k > 0 && k < TOPCHARCODE)
 	{
 		/* Se apretó una tecla */
     if(!processKeyScanCode(k))
 		{
 			//caso de un caracter a imprimir en pantalla
-      buff_size++;
+
+			buff_size++;
 			// guarda el scancode de la tecla
-      buffer[store_index++] = k;
+			buffer[store_index++] = k;
+
       unblock_read_process(get_foreground_process());
-    }
+		}
   }
 	else if (k < 0)
 	{
