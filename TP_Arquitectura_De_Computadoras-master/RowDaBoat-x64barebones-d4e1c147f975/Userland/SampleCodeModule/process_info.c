@@ -8,6 +8,7 @@
 #define STACK_ADDR "Stack Address: "
 #define MEM_ADDR "Memory Address: "
 #define PPID "PPID"
+#define PID "PID"
 
 static char * state[] = {"RUNNING", "READY", "BLOCKED"};
 
@@ -18,6 +19,8 @@ int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING])
 {
 	int i = 0;
 	char * ground = p->is_foreground ? FOREGROUND : BACKGROUND;
+
+	i += strcpysep(buffer + i, PID, SEPARATOR);
 
 	i += itoa(p->pid, buffer + i, 10);
 
@@ -47,7 +50,7 @@ int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING])
 
 static int strcpysep (char * to, const char * source, char separator)
 {
-	int len = strcpy(to, source);
+	int len = strcpy(source, to);
 	to[len++] = separator;
 	to[len] = '\0';
 	return len;

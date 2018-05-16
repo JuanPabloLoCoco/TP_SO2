@@ -72,6 +72,7 @@ void shell()
 					testFree(testFree);
 					break;
 				case PS_TEST:
+					putchar('\n');
 					ps();
 					break;
 			}

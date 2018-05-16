@@ -4,7 +4,7 @@
 
 void testDualAllocation()
 {
-	printf("Testeo doble creacion:\n");
+	printf("\nTesteo doble creacion:\n");
 	void * firstAddress = malloc(1000);
 	void * secondAddress = malloc(1000);
 	if((int)firstAddress == (int)secondAddress)
@@ -19,7 +19,7 @@ void testDualAllocation()
 
 void testFree()
 {
-	printf("Testeo free:\n");
+	printf("\nTesteo free:\n");
 	void * firstAddress = malloc(1000);
 	free(firstAddress);
 	void * secondAddress = malloc(1000);
