@@ -20,7 +20,7 @@ int functionArgs[MAX_QUADRATIC_INTS];
 int width = 0;
 int height = 0;
 
-static int ps(int argc, char * argv[]);
+static int ps();
 
 void shell()
 {
@@ -66,13 +66,13 @@ void shell()
 					test(functionArgs[0]);
 					break;
 				case DUAL_ALLOCATION_TEST:
-					test(functionArgs[0]);
+					testDualAllocation();
 					break;
 				case FREE_TEST:
-					test(functionArgs[0]);
+					testFree(testFree);
 					break;
 				case PS_TEST:
-					test(functionArgs[0]);
+					ps();
 					break;
 			}
 		}
@@ -191,15 +191,15 @@ int getCommands()
 			}
 			return TEST;
 		}
-		else if(strcmp(command, "dual malloc test"))
+		else if(strcmp(command, "dualAllocExample"))
 		{
 			return DUAL_ALLOCATION_TEST;
 		}
-		else if(strcmp(command, "free test"))
+		else if(strcmp(command, "freeExample"))
 		{
 			return FREE_TEST;
 		}
-		else if(strcmp(command, "ps test"))
+		else if(strcmp(command, "ps"))
 		{
 			return PS_TEST;
 		}
@@ -332,7 +332,7 @@ static void print_single_process(int pid)
   }
 }
 
-static int ps(int argc, char * argv[])
+static int ps()
 {
   int pid_array[MAX_PROCESSES], i;
 
