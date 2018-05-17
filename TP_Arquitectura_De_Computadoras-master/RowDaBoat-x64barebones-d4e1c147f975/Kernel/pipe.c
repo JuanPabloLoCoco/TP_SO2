@@ -41,9 +41,9 @@ pipe_t createPipe(char* name)
     char mname[16]={'p','_'};
     strcpy(mname+1,name,13);
     mname[15]='\0';
-    pipe_t newPipe= buddyAllocate(sizeof(* newPipe));
-    newPipe->name=buddyAllocate(MAX_PIPE_NAME+1);
-    strcpy(newPipe->name,name,MAX_PIPE_NAME);
+    pipe_t newPipe = buddyAllocate(sizeof(* newPipe));
+    newPipe->name = buddyAllocate(MAX_PIPE_NAME+1);
+    strcpy(newPipe->name , name ,MAX_PIPE_NAME);
 
     newPipe->mutex = mutex_open(mname);
     newPipe->buffer = buddyAllocatePages(1);

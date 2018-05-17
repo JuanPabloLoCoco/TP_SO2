@@ -14,4 +14,9 @@ int randM(void); // RAND_MAX assumed to be 32767
 
 int randBound(int min, int max);
 
+int rand_int();
+
+int rand_int_range(int low, int top);
+
+
 #endif

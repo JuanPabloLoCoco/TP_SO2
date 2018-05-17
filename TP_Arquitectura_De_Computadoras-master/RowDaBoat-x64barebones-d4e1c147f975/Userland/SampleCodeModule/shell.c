@@ -78,7 +78,7 @@ void shell()
 					break;
 				case PROD_CONS:
 					putchar('\n');
-					olvidameVersionSO();
+					start_producer_consumer_problem2();
 					break;
 			}
 		}
