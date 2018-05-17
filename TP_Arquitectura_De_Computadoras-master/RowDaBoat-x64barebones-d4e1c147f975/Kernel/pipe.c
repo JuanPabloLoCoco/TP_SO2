@@ -46,7 +46,10 @@ pipe_t createPipe(char* name)
     strcpy(newPipe->name , name ,MAX_PIPE_NAME);
 
     newPipe->mutex = mutex_open(mname);
-    newPipe->buffer = buddyAllocatePages(1);
+    for (int i = 0; i < MINPAGE; i++)
+    {
+        newPipe->buffer[i] = 0;
+    }
     newPipe->bufferSize = 0;
     newPipe->initialIndex = 0;
 
@@ -166,10 +169,10 @@ int writePipe(pipe_t pipe,char* msg, uint64_t amount)
         semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
     }
     mutex_lock(pipe->mutex);
-    for(i=0; i< amount;i++)
+    for(i=0; i < amount;i++)
     {
-        pipe->buffer[(pipe->initialIndex + pipe->bufferSize) %MINPAGE] = msg[i];
-        pipe->bufferSize ++;
+      pipe->buffer[0] = msg[i];
+      pipe->bufferSize++;
     }
     semaphore_signal(pipe->readSemaphore);
     mutex_unlock(pipe->mutex);
@@ -185,7 +188,6 @@ int readPipe(pipe_t pipe,char* ans,uint64_t amount)
     {
         semaphore_wait(pipe->readSemaphore,pipe->readMutex);
     }
-
     mutex_lock(pipe->mutex);
     for(j=0; j < amount && pipe->bufferSize > 0;j++)
     {
