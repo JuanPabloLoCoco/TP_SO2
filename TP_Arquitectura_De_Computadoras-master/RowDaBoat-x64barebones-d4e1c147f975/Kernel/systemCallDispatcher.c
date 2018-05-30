@@ -138,6 +138,12 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 			case 38:
 				result = sys_closeSemaphore(rsi);
 				break;
+			case 39:
+				result = sys_cd(rsi);
+				break;
+			case 40:
+				resutl = sys_mkdir(rsi);
+				break;
 		}
 		return result;
 }
@@ -451,4 +457,20 @@ static uint64_t sys_get_mutexes_info_wr(uint64_t info_array)
 uint64_t sys_get_mutexes_info(mutex_info * info_array)
 {
 	return get_mutexes_info(info_array);
+}
+
+/*------------------------DIRECTORY_SYSTEM ----------------------*/
+uint64_t sys_cd_wr(char * fileName)
+{
+	return (uint64_t) surfDirectory(fileName);
+}
+
+uint64_t sys_cd(uint64_t fileName)
+{
+	return sys_cd_wr((char *) fileName);
+}
+
+uint64_t sys_mkdir(uint64_t name)
+{
+	return (uint64_t) (createDir((char *) name,(file *) sys_cd(".")));
 }
