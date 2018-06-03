@@ -7,9 +7,10 @@
 #include <defs.h>
 #include <dirs.h>
 #include <process.h>
+#include <videoDriver.h>
 
 #define MEMBEGIN 0x10000000
-#define MAXMEMORY (128*1024*1024)
+#define MAXMEMORY (16*1024*1024)
 #define MINPAGE (4*1024)
 #define PAGE_SIZE 4*1024
 #define MAXHEAPSIZE (MAXMEMORY/MINPAGE)*2-1
@@ -113,13 +114,16 @@ uint16_t recursiveMark(int index)
 {
     if(index > heapSize/2)
     {
-        heap[index] = 1;
+        heap[index - 1] = 1;
+        draw_word("heap en la posicion : ");
+        printNum(index - 1);
+        draw_word("\n");
         return (1 << 1) + 1;
     }
 
     recursiveMark(RCHILD(index));
     uint16_t mark = recursiveMark(LCHILD(index));
-    heap[index] = mark;
+    heap[index - 1] = mark;
     return (mark << 1) + 1;
 }
 
@@ -157,8 +161,6 @@ uint64_t store_stack_page(uint64_t address)
 
 void* addNblocks(unsigned char  n)
 {
-    int a = ((1 + heapSize)/2);
-
     if(n > ((1 + heapSize)/2)) return NULL;
 
     return recursiveAdd(1, n, (uint64_t)beginning, MAXMEMORY);
@@ -167,25 +169,25 @@ void* addNblocks(unsigned char  n)
 void* recursiveAdd(int i, uint16_t n, uint64_t address, uint64_t innerSize)
 {
     void*ans = NULL;
-    if(!ISNAVAILABLE(heap[i], n))
+    if(!ISNAVAILABLE(heap[i - 1], n))
     {
         return NULL;
     }
     else
     {
-        if(i <= heapSize/2 && ISNAVAILABLE(heap[RCHILD(i)], n))
+        if(i <= heapSize/2 && ISNAVAILABLE(heap[RCHILD(i) - 1], n))
         {
             ans= recursiveAdd(RCHILD(i), n, address + (innerSize/2), innerSize/2);
-            heap[i] = heap[RCHILD(i)] | heap[LCHILD(i)];
+            heap[i - 1] = heap[RCHILD(i) - 1 ] | heap[LCHILD(i) - 1];
         }
-        else if(i <= heapSize/2 && ISNAVAILABLE(heap[LCHILD(i)], n))
+        else if(i <= heapSize/2 && ISNAVAILABLE(heap[LCHILD(i) - 1], n))
         {
             ans = recursiveAdd(LCHILD(i),n,address,innerSize/2);
-            heap[i] = heap[RCHILD(i)] | heap[LCHILD(i)];
+            heap[i - 1] = heap[RCHILD(i) - 1] | heap[LCHILD(i) - 1];
         }
         else
         {
-            heap[i] = 0;
+            heap[i - 1] = 0;
             return (void*)address;
         }
     }
@@ -223,7 +225,7 @@ int buddyFree(void* address)
 int searchMemoryUp(int i, uint16_t level)
 {
     if(i < 1) return 0;
-    if(heap[i] == 0)
+    if(heap[i - 1] == 0)
     {
         return pow2(level-1);
     }
@@ -241,9 +243,9 @@ int searchMemoryUp(int i, uint16_t level)
 int searchUp(int i, uint16_t level)
 {
     if(i < 1) return -1;
-    if(heap[i] == 0)
+    if(heap[i - 1] == 0)
     {
-        heap[i] = myMask(level);
+        heap[i - 1] = myMask(level);
         releaseUp(PARENT(i), level+1);
         return 0;
     }
@@ -260,13 +262,13 @@ int searchUp(int i, uint16_t level)
 void releaseUp(int i,uint16_t level)
 {
     if(i < 1) return;
-    if(heap[RCHILD(i)] == myMask(level-1) && heap[LCHILD(i)] == myMask(level-1))
+    if(heap[RCHILD(i) - 1] == myMask(level-1) && heap[LCHILD(i) - 1] == myMask(level-1))
     {
-        heap[i] = myMask(level);
+        heap[i - 1] = myMask(level);
     }
     else
     {
-        heap[i] = heap[RCHILD(i)] | heap[LCHILD(i)];
+        heap[i - 1] = heap[RCHILD(i) - 1] | heap[LCHILD(i) - 1];
     }
     releaseUp(PARENT(i), level+1);
 }
