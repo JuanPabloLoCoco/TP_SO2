@@ -1,4 +1,4 @@
-#include <syscalls.h>
+/* #include <syscalls.h>
 #include <stdlib.h>
 #include <prodConsWithPipes.h>
 #include <math.h>
@@ -106,3 +106,4 @@ void so()
     // closePipe("SOToStudent");
     end();
 }
+*/

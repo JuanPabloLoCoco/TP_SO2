@@ -5,6 +5,7 @@
 #define SHELL 1
 
 #include <ipc_info.h>
+#include <file.h>
 
 
 uint64_t sys_read(uint64_t fd, char* destination, uint64_t count);
@@ -63,5 +64,9 @@ uint64_t sys_closeMutex(uint64_t key);
 uint64_t sys_lockMutex(uint64_t key);
 uint64_t sys_unlockMutex(uint64_t key);
 uint64_t sys_get_mutexes_info(mutex_info * info_array);
+
+uint64_t sys_cd_wr(char * fileName);
+uint64_t sys_cd(uint64_t fileName);
+uint64_t sys_mkdir(uint64_t name);
 
 #endif

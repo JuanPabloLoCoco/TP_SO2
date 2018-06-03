@@ -142,7 +142,7 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_cd(rsi);
 				break;
 			case 40:
-				resutl = sys_mkdir(rsi);
+				result = sys_mkdir(rsi);
 				break;
 		}
 		return result;
