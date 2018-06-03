@@ -160,7 +160,7 @@ void deletePipe(pipe_t pipe)
     return;
 }
 
-int writePipe(pipe_t pipe,char* msg, uint64_t amount)
+int writePipe(pipe_t pipe,const char* msg, uint64_t amount)
 {
     int i;
     mutex_lock(pipe->writeMutex);

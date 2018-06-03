@@ -4,6 +4,7 @@
 #include <process.h>
 #include <scheduler.h>
 #include <defs.h>
+#include <buddyAllocator.h>
 
 static sleep_process * sleeping_process = NULL;
 static sleep_process * create_sleep_process(uint64_t ticks);

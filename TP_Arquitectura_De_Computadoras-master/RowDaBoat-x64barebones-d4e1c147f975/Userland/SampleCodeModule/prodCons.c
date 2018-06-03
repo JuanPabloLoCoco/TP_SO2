@@ -3,6 +3,7 @@
 #include <prodCons.h>
 #include <math.h>
 #include <defs.h>
+#include <ctype.h>
 
 static void producer();
 static void consumer();
@@ -90,8 +91,8 @@ void start_producer_consumer_problem2()
   buffer_mutex = mutex_open("PROD_CONS_2");
   semaphore_variable = semaphore_open("PROD_CONS_COND");
 
-  prod_pid = exec(&producer,NULL, "producer2");
-  cons_pid = exec(&consumer,NULL,"consumer2");
+  prod_pid = exec(&producer,(uint64_t)NULL, "producer2");
+  cons_pid = exec(&consumer,(uint64_t)NULL,"consumer2");
 
   control_speed();
   kill(prod_pid);

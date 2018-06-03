@@ -49,6 +49,8 @@ int scanf(const char* format,...);
 /*reads text from the input until enter and returns what has read*/
 char* readLine(void);
 
+int itoa(int value, char *str, int base);
+
 void * malloc(int amount);
 void free(void * address);
 

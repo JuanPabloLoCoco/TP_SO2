@@ -72,6 +72,8 @@ int getScreenWidth(void);
 /*prints the given number in its hexadecimal representation*/
 void printHexaNumber(uint64_t number);
 
+void setFontColor(uint8_t blue, uint8_t green, uint8_t red);
+
 /*returns the char corresponding to the hexadecimal representation
 ** of the given number, the given number must be between 0 and 15
 ** if not it will return 0;

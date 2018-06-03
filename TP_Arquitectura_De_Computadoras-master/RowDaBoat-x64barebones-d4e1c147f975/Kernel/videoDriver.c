@@ -10,6 +10,7 @@ Color background_color= {0,0,0};
 Color fontColor = {0xFF,0xFF,0xFF};
 int lastEnter = -1;
 
+void intToString(char* str, int num);
 static char toHexa(uint64_t n);
 
 /*sets the pointer to the given values*/
@@ -162,7 +163,7 @@ void draw_char_position(uint8_t l, int x, int y)
 void newLine()
 {
   lastEnter = pointer.x;
-  if(pointer.y = mode_info->height - CHAR_HEIGHT)
+  if((pointer.y = mode_info->height - CHAR_HEIGHT))
   {
     scrollUp();
     pointer.y = mode_info->height - CHAR_HEIGHT;

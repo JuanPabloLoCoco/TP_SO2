@@ -73,33 +73,33 @@
       draw_verticalTotalLine(x0);
       int y0 = height/2;
       draw_horizontalTotalLine(y0);
-			sys_drawCharPosition('1', width/2 + 100, height/2 +CHAR_HEIGHT );
-			sys_drawCharPosition('2', width/2 + 200, height/2 +CHAR_HEIGHT );
-			sys_drawCharPosition('3', width/2 + 300, height/2 +CHAR_HEIGHT );
-      sys_drawCharPosition('3',width/2+300,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('4',width/2+400,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('5',width/2+500,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('1',width/2-100,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('2',width/2-200,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('3',width/2-300,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('4',width/2-400,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('5',width/2-500,height/2 +CHAR_HEIGHT);
-      sys_drawCharPosition('1',width/2-CHAR_WIDTH,height/2 -100);
-      sys_drawCharPosition('2',width/2-CHAR_WIDTH,height/2 -200);
-      sys_drawCharPosition('3',width/2-CHAR_WIDTH,height/2 -300);
-      sys_drawCharPosition('4',width/2-CHAR_WIDTH,height/2 -400);
-      sys_drawCharPosition('5',width/2-CHAR_WIDTH,height/2 -500);
-      sys_drawCharPosition('1',width/2-CHAR_WIDTH,height/2 +100);
-      sys_drawCharPosition('2',width/2-CHAR_WIDTH,height/2 +200);
-      sys_drawCharPosition('3',width/2-CHAR_WIDTH,height/2 +300);
-      sys_drawCharPosition('4',width/2-CHAR_WIDTH,height/2 +400);
-      sys_drawCharPosition('5',width/2-CHAR_WIDTH,height/2 +500);
+			sys_drawCharPosition("1", width/2 + 100, height/2 +CHAR_HEIGHT );
+			sys_drawCharPosition("2", width/2 + 200, height/2 +CHAR_HEIGHT );
+			sys_drawCharPosition("3", width/2 + 300, height/2 +CHAR_HEIGHT );
+      sys_drawCharPosition("3",width/2+300,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("4",width/2+400,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("5",width/2+500,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("1",width/2-100,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("2",width/2-200,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("3",width/2-300,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("4",width/2-400,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("5",width/2-500,height/2 +CHAR_HEIGHT);
+      sys_drawCharPosition("1",width/2-CHAR_WIDTH,height/2 -100);
+      sys_drawCharPosition("2",width/2-CHAR_WIDTH,height/2 -200);
+      sys_drawCharPosition("3",width/2-CHAR_WIDTH,height/2 -300);
+      sys_drawCharPosition("4",width/2-CHAR_WIDTH,height/2 -400);
+      sys_drawCharPosition("5",width/2-CHAR_WIDTH,height/2 -500);
+      sys_drawCharPosition("1",width/2-CHAR_WIDTH,height/2 +100);
+      sys_drawCharPosition("2",width/2-CHAR_WIDTH,height/2 +200);
+      sys_drawCharPosition("3",width/2-CHAR_WIDTH,height/2 +300);
+      sys_drawCharPosition("4",width/2-CHAR_WIDTH,height/2 +400);
+      sys_drawCharPosition("5",width/2-CHAR_WIDTH,height/2 +500);
    }
 
   /*clears the screen*/
   void cls()
   {
-     	clear;
+     	clear();
  	}
 
   /*returns the screen width*/

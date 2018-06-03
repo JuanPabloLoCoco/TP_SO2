@@ -9,23 +9,11 @@
 #include <process.h>
 #include <videoDriver.h>
 
-#define MEMBEGIN 0x10000000
-#define MAXMEMORY (16*1024*1024)
-#define MINPAGE (4*1024)
-#define PAGE_SIZE 4*1024
-#define MAXHEAPSIZE (MAXMEMORY/MINPAGE)*2-1
-#define MAX_PROCESSES 128
-
-#define PARENT(i) ((i) >> 1)
-#define LCHILD(i) ((i) << 1)
-#define RCHILD(i) (((i) << 1) + 1)
-#define AMILEFT(i) !((i) % 2)
-#define ISNAVAILABLE(i,n) ((i)&(myBit(n)))
-
 static uint64_t stack_pages_stack[ MAX_PROCESSES ];
 static uint16_t current_stack_index = 0; /* Apunta al elemento a poppear */
 
 static uint16_t heap[MAXHEAPSIZE];
+static uint16_t amountBlocks[MAXAMOUTBLOCKS];
 static uint64_t heapSize = 0;
 static uint64_t block = 0;
 static void* beginning = (void*) MEMBEGIN;
@@ -88,6 +76,10 @@ void initializeHeap()
     block = MINPAGE;
     heapSize = MAXHEAPSIZE;
     recursiveMark(1);
+    for (int i = 0 ; i < MAXAMOUTBLOCKS ; i++ )
+    {
+      amountBlocks[i] = 0;
+    }
 }
 
 void initializeHeapMutex()
@@ -115,9 +107,6 @@ uint16_t recursiveMark(int index)
     if(index > heapSize/2)
     {
         heap[index - 1] = 1;
-        draw_word("heap en la posicion : ");
-        printNum(index - 1);
-        draw_word("\n");
         return (1 << 1) + 1;
     }
 
@@ -188,6 +177,7 @@ void* recursiveAdd(int i, uint16_t n, uint64_t address, uint64_t innerSize)
         else
         {
             heap[i - 1] = 0;
+            amountBlocks[ i - 1 - (heapSize/2)] = n;
             return (void*)address;
         }
     }
@@ -213,7 +203,12 @@ int buddyFree(void* address)
     else
     {
         int position = ((uint64_t)address)/block;
-        ans = searchUp(heapSize/2 + 1 + position,1);
+        int n = amountBlocks[position];
+        for (int i = 0; i < n; i++)
+        {
+          ans = searchUp(heapSize/2 + 1 + position,1);
+          position ++;
+        }
     }
 
     mutex_unlock(mutex);

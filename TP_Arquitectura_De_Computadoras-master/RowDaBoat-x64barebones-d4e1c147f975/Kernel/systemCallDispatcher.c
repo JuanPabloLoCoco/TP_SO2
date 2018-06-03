@@ -11,6 +11,9 @@
 #include <ipc_info.h>
 #include <process_info.h>
 
+
+int getChar(void);
+void _sti(void);
 static uint64_t sys_exec_wr(uint64_t ptr, uint64_t params, uint64_t name);
 static uint64_t sys_get_mutexes_info_wr(uint64_t info_array);
 static uint64_t sys_process_info_wr (uint64_t pid, uint64_t pi);
@@ -22,10 +25,10 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 		switch(rax)
 		{
 			case 0:
-				result = sys_read(rdi, rsi, rdx);
+				result = sys_read(rdi, (char *)rsi, rdx);
 				break;
 			case 1:
-				 result = sys_write(rdi, rsi, rdx);
+				 result = sys_write(rdi, (char *)rsi, rdx);
 				 break;
 			case 2:
 				result = (uint64_t)sys_seconds();
@@ -177,7 +180,7 @@ uint64_t sys_read(uint64_t fd, char* destination, uint64_t count)
   }
 	else if (fd > 2 && fd < 8)
 	{
-			pipe_t pipe = get_process_by_pid(get_current_process())->fd[fd-3];
+			pipe_t pipe = get_process_by_pid((uint64_t) get_current_process())->fd[fd-3];
 			readPipe(pipe, destination, count);
 	}
   return i;
@@ -199,7 +202,7 @@ uint64_t sys_write(unsigned int fd, const char* buffer, uint64_t count)
 	}
 	else if (fd > 2 && fd < 8)
 	{
-		pipe_t pipe = get_process_by_pid(get_current_process())->fd[fd-3];
+		pipe_t pipe = get_process_by_pid((uint64_t) get_current_process())->fd[fd-3];
 		writePipe(pipe, buffer, count);
 	}
 	return i;
@@ -381,7 +384,7 @@ static uint64_t sys_process_info_wr(uint64_t pid, uint64_t pi)
 
 uint64_t sys_openPipe(uint64_t name,uint64_t ans) {
   	int * a = (int *) ans;
-  	*a = addPipe(getPipe((char*)name)) + 3;
+  	*a = addPipe(getPipe((char *)name)) + 3;
   	return 0;
 }
 

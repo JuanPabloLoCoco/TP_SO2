@@ -8,6 +8,7 @@
 #include "include/KeyboardDriver.h"
 #include "include/process.h"
 #include "include/interrupts.h"
+#include "include/buddyAllocator.h"
 
 #define QUANTUM 1
 

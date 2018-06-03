@@ -26,7 +26,7 @@ typedef pipe_s * pipe_t;
 
 pipe_t getPipe(char* name);
 void releasePipe(char* name);
-int writePipe(pipe_t pipe,char* msg , uint64_t amount);
+int writePipe(pipe_t pipe,const char* msg , uint64_t amount);
 int readPipe(pipe_t pipe,char* ans,uint64_t amount);
 void initIPC();
 int whereIsPipe(char* name);
