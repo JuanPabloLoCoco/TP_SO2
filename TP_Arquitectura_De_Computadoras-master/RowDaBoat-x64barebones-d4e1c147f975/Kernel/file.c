@@ -4,7 +4,7 @@
 #include <defs.h>
 #include "include/strings.h"
 
-static file openFiles[MAX_FILES];
+static file * openFiles[MAX_FILES];
 static file * currentDir = NULL;
 static file * home = NULL;
 
@@ -15,14 +15,14 @@ void initFileSystem()
   home = currentDir;
 }
 
-char * getSonsName(file * f);
+char * getSonsName(file * f)
 {
   uint64_t size = f->sonsAmount;
   char * resp = buddyAllocate (MAX_SONS * (MAX_FILE_NAME + 5));
   for (int p = 0; p < size ; p++)
   {
-      strcat(resp, f->sons[p]->name);
-      strcat(resp, "  /  ");
+      // strcat(resp, f->sons[p]->name);
+      // strcat(resp, "  /  ");
   }
   return resp;
 }
@@ -42,20 +42,20 @@ char * pathName(file * f)
   char resp [128];
   if (f == home)
   {
-    strcpy(resp,"/home");
+    strcpyWithNoIndex(resp,"/home");
     return resp;
   }
-  strcpy(resp, pathName(f->father));
-  strcat(resp, f->name);
+  strcpyWithNoIndex(resp, pathName(f->father));
+  // strcat(resp, f->name);
   return resp;
 }
-(
+
 file * createDir(char * name , file * father)
 {
     file * new_file = (file *) buddyAllocate( sizeof(file));
     strcpy( new_file->name, name, MAX_FILE_NAME);
     new_file->father = father;
-    new_file->sonsAmount = 0
+    new_file->sonsAmount = 0;
     new_file->isDir = 0;
     return new_file;
 }
@@ -67,7 +67,7 @@ file * surfDirectory(char * name)
     return NULL;
 
   }
-  
+
   if (strcmp(name, "..") == 0)
   {
     if (currentDir != home)
