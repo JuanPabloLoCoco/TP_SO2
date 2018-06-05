@@ -1,6 +1,7 @@
+#include <stdlib.h>
 #include <process_info.h>
 #include <syscalls.h>
-#include <stdlib.h>
+
 
 #define SEPARATOR ' '
 #define FOREGROUND "foreground"
@@ -12,7 +13,7 @@
 
 static char * state[] = {"RUNNING", "READY", "BLOCKED"};
 
-static int strcpysep (char * to, const char * source, char separator);
+static int strcpysep (char * to, char * source, char separator);
 
 
 int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING])
@@ -48,7 +49,7 @@ int process_string(const process_info * p, char buffer[MAX_PROCESS_STRING])
 	return i;
 }
 
-static int strcpysep (char * to, const char * source, char separator)
+static int strcpysep (char * to, char * source, char separator)
 {
 	int len = strcpy(source, to);
 	to[len++] = separator;

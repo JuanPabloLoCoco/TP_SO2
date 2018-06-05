@@ -59,14 +59,14 @@ static void printRegisters(uint64_t* rsp)
 {
 	for (int i = 0 ; i < REGISTERS ; i++)
 	{
-		registersData[i] = rsp[i];
+		registersData[i] = (uint64_t) rsp[i];
 	}
 
 	for(int i = 0; i < REGISTERS; i++)
 	{
 		draw_word(registers[REGISTERS -1 -i]);
 		draw_word(":  ");
-		printHexaNumber(registersData[i]);
+		printHexaNumber((uint64_t) registersData[i]);
 		newLine();
 	}
 }

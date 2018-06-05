@@ -9,6 +9,18 @@
 #define MINPAGE (4*1024) //in b//
 #define PAGE_SIZE 4*1024
 
+#define MAXHEAPSIZE (MAXMEMORY/MINPAGE)*2-1
+#define MAXAMOUTBLOCKS (MAXMEMORY/MINPAGE)
+
+#define MAX_PROCESSES 128
+
+#define PARENT(i) ((i) >> 1)
+#define LCHILD(i) ((i) << 1)
+#define RCHILD(i) (((i) << 1) + 1)
+#define AMILEFT(i) !((i) % 2)
+#define ISNAVAILABLE(i,n) ((i)&(myBit(n)))
+
+
 /* Tamaño de stack de nuevos procesos */
 
 #define STACK_PAGE_SIZE 0x100000

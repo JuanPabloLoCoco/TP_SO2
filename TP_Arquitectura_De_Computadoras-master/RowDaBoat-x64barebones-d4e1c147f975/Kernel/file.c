@@ -4,9 +4,12 @@
 #include <defs.h>
 #include "include/strings.h"
 
-static file * openFiles[MAX_FILES];
+//static file * openFiles[MAX_FILES];
 static file * currentDir = NULL;
 static file * home = NULL;
+
+
+char respPathName [128];
 
 void initFileSystem()
 {
@@ -39,15 +42,15 @@ char isDir(file * f)
 
 char * pathName(file * f)
 {
-  char resp [128];
+  //char resp [128];
   if (f == home)
   {
-    strcpyWithNoIndex(resp,"/home");
-    return resp;
+    strcpyWithNoIndex(respPathName,"/home");
+    return respPathName;
   }
-  strcpyWithNoIndex(resp, pathName(f->father));
+  strcpyWithNoIndex(respPathName, pathName(f->father));
   // strcat(resp, f->name);
-  return resp;
+  return respPathName;
 }
 
 file * createDir(char * name , file * father)

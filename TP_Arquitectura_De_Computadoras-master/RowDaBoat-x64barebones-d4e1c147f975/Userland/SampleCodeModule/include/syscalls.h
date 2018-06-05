@@ -41,7 +41,7 @@ void setPointer(int x, int y);
 
 void color(int blue, int green, int red);
 
-uint64_t allocMemory(uint64_t amount);
+void * allocMemory(uint64_t amount);
 
 void freeMemory(void * address);
 

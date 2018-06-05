@@ -7,7 +7,7 @@ void testDualAllocation()
 	printf("\nTesteo doble creacion:\n");
 	void * firstAddress = malloc(1000);
 	void * secondAddress = malloc(1000);
-	if((int)firstAddress == (int)secondAddress)
+	if(firstAddress == secondAddress)
 	{
 		printf("Mismos lugares. Mala alocacion\n");
 	}
@@ -23,7 +23,7 @@ void testFree()
 	void * firstAddress = malloc(1000);
 	free(firstAddress);
 	void * secondAddress = malloc(1000);
-	if((int)firstAddress == (int)secondAddress)
+	if(firstAddress == secondAddress)
 	{
 		printf("Mismos lugares. Buen free\n");
 	}

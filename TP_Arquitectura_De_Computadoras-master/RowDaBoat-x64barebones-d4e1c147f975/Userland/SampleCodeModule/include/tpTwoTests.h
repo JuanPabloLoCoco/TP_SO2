@@ -3,5 +3,7 @@
 
 void testOne();
 void testTwo();
+void testFree();
+void testDualAllocation();
 
 #endif

@@ -12,6 +12,7 @@
 #include <syscalls.h>
 #include <ctype.h>
 #include <prodCons.h>
+#include <test.h>
 
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
@@ -22,69 +23,6 @@ int width = 0;
 int height = 0;
 
 static int ps();
-
-void shell()
-{
-	setUpShell();
-	int command;
-	printPrompt();
-	while(command = getCommands())
-	{
-		if(command >= COMMANDS_QUANTITY)
-		{
-			printf("command not found\n");
-		}
-		else
-		{
-			switch(command)
-			{
-				case TIME:
-					time();
-					break;
-				case DATE:
-					date();
-					break;
-				case CLEAR:
-					clear();
-					setUpShell();
-					break;
-				case HELP:
-					help();
-					break;
-				case ECHO:
-					echo(args);
-					break;
-				case LINEAR:
-					functionScreen(0,functionArgs[0],functionArgs[1]);
-					break;
-				case QUADRATIC:
-					functionScreen(functionArgs[0],functionArgs[1],functionArgs[2]);
-					break;
-				case COLOR:
-					color(functionArgs[0],functionArgs[1],functionArgs[2]);
-					break;
-				case TEST:
-					test(functionArgs[0]);
-					break;
-				case DUAL_ALLOCATION_TEST:
-					testDualAllocation();
-					break;
-				case FREE_TEST:
-					testFree(testFree);
-					break;
-				case PS_TEST:
-					putchar('\n');
-					ps();
-					break;
-				case PROD_CONS:
-					putchar('\n');
-					start_producer_consumer_problem2();
-					break;
-			}
-		}
-		printPrompt();
-	}
-}
 
 /*set up the pointer to the las line*/
 void setUpShell()
@@ -353,4 +291,67 @@ static int ps()
   }
 
   return 1;
+}
+
+void shell()
+{
+	setUpShell();
+	int command;
+	printPrompt();
+	while( (command = getCommands()) )
+	{
+		if(command >= COMMANDS_QUANTITY)
+		{
+			printf("command not found\n");
+		}
+		else
+		{
+			switch(command)
+			{
+				case TIME:
+					time();
+					break;
+				case DATE:
+					date();
+					break;
+				case CLEAR:
+					clear();
+					setUpShell();
+					break;
+				case HELP:
+					help();
+					break;
+				case ECHO:
+					echo(args);
+					break;
+				case LINEAR:
+					functionScreen(0,functionArgs[0],functionArgs[1]);
+					break;
+				case QUADRATIC:
+					functionScreen(functionArgs[0],functionArgs[1],functionArgs[2]);
+					break;
+				case COLOR:
+					color(functionArgs[0],functionArgs[1],functionArgs[2]);
+					break;
+				case TEST:
+					test(functionArgs[0]);
+					break;
+				case DUAL_ALLOCATION_TEST:
+					testDualAllocation();
+					break;
+				case FREE_TEST:
+					testFree(testFree);
+					break;
+				case PS_TEST:
+					putchar('\n');
+					ps();
+					break;
+				case PROD_CONS:
+					putchar('\n');
+					start_producer_consumer_problem2();
+					break;
+			}
+		}
+		printPrompt();
+	}
 }

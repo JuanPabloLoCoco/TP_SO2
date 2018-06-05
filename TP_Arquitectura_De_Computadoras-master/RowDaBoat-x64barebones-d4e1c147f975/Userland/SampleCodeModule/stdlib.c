@@ -4,7 +4,9 @@
 #include <plotter.h>
 #include <stdarg.h>
 #include <syscalls.h>
+#include <ctype.h>
 
+char buff[BUFFER_SIZE];
 /*turns the given integer into a string and stores it in
 ** the given array
 */
@@ -214,7 +216,7 @@ int scanf(const char* format,...)
 				case 's':
           string = va_arg(args,char*);
           char c;
-          while( c = read[j] )
+          while( (c = read[j]) )
 					{
               *string = c;
               string++;
@@ -233,8 +235,8 @@ int scanf(const char* format,...)
 char* readLine()
 {
     int bufferIndex = 0;
-    char buff[BUFFER_SIZE];
-    int c ;
+    //char buff[BUFFER_SIZE];
+		int c ;
     while ((c = getchar()) != '\n')
 		{
         if(c == '\b')
@@ -255,7 +257,7 @@ char* readLine()
     }
     putchar(c);
     buff[bufferIndex] = '\0';
-    return (char *)buff;
+    return buff;
 }
 
 /* Copia en str los valores ascii de los digitos de value en la base indicada.

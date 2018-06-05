@@ -34,7 +34,7 @@ int get_hours()
 
 int get_year()
 {
-  (int)_int80(5,0,0,0,0,0);
+  return (int)_int80(5,0,0,0,0,0);
 }
 
 int get_month()
@@ -77,9 +77,9 @@ void color(int blue, int green, int red)
 	_int80(13, blue , green, red , 0 , 0 );
 }
 
-uint64_t allocMemory(uint64_t amount)
+void * allocMemory(uint64_t amount)
 {
-	return (void *)_int80(14, amount, 0, 0, 0, 0);
+	return (void *) _int80(14, amount, 0, 0, 0, 0);
 }
 
 void freeMemory(void * address)
@@ -125,7 +125,7 @@ int pid()
 int openPipe(char * name)
 {
 	int fd;
-	_int80(23, name, &fd, 0, 0, 0);
+	_int80(23,(uint64_t ) name, (uint64_t)&fd, 0, 0, 0);
 	return fd;
 }
 

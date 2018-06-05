@@ -18,7 +18,7 @@ typedef struct{
 }mutex;
 
 static mutex open_mutexes[MAX_MUTEXES];
-extern int _unlocked(int64_t * locknum);
+extern int _unlocked(uint64_t * locknum);
 static int64_t array_mutex = UNLOCKED;
 
 static process * dequeue_process(mutex *m);
