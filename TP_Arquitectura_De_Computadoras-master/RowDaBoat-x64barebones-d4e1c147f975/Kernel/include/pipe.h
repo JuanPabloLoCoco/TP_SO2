@@ -11,7 +11,7 @@
 #define PIPES_MUTEX "__PIPES__MUTEX"
 
 typedef struct{
-    char buffer[1024*4];
+    char* buffer;
     int bufferSize;
     int initialIndex;
     int mutex;

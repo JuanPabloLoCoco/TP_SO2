@@ -255,10 +255,14 @@ uint64_t openFile(file * thisFile, uint64_t state)
     {
         return OPEN_IN_OTHER_PROCESS_ERR;
     }
+    return thisFile->state;
     mutex_unlock(mutex);
 }
 
-void closeFile()
+uint64_t closeFile(file * thisFile)
 {
+    mutex_lock(mutex);
+    if (thisFile->)
 
+    mutex_unlock(mutex);
 }

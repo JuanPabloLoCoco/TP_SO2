@@ -46,6 +46,7 @@ char isDir(file * f);
 char * getName(file * f);
 char * getSonsName(file * f);
 void initFileSystem();
+char nameDoesExistInCurrent(char * name);
 
 fileBlock * getBlock();
 void realeseBlock(fileBlock * block);
