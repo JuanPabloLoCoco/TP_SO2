@@ -162,21 +162,23 @@ void deletePipe(pipe_t pipe)
 
 int writePipe(pipe_t pipe,char* msg, uint64_t amount)
 {
-    int i;
-    mutex_lock(pipe->writeMutex);
-    while (pipe->bufferSize >= MINPAGE)
-    {
-        semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
-    }
-    mutex_lock(pipe->mutex);
-    for(i=0; i < amount;i++)
-    {
-      pipe->buffer[0] = msg[i];
-      pipe->bufferSize++;
-    }
-    semaphore_signal(pipe->readSemaphore);
-    mutex_unlock(pipe->mutex);
-    mutex_unlock(pipe->writeMutex);
+    draw_word("Hola\n");
+    draw_word(pipe->name);
+    // int i;
+    // mutex_lock(pipe->writeMutex);
+    // while (pipe->bufferSize >= MINPAGE)
+    // {
+    //     semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
+    // }
+    // mutex_lock(pipe->mutex);
+    // for(i=0; i < amount;i++)
+    // {
+    //   pipe->buffer[0] = msg[i];
+    //   pipe->bufferSize++;
+    // }
+    // semaphore_signal(pipe->readSemaphore);
+    // mutex_unlock(pipe->mutex);
+    // mutex_unlock(pipe->writeMutex);
     return 1;
 }
 

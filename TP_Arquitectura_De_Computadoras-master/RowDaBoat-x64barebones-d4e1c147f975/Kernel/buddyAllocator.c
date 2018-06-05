@@ -115,9 +115,6 @@ uint16_t recursiveMark(int index)
     if(index > heapSize/2)
     {
         heap[index - 1] = 1;
-        draw_word("heap en la posicion : ");
-        printNum(index - 1);
-        draw_word("\n");
         return (1 << 1) + 1;
     }
 

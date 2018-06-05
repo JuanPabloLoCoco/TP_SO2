@@ -12,6 +12,7 @@
 #include <syscalls.h>
 #include <ctype.h>
 #include <prodCons.h>
+#include <prodConsWithPipes.h>
 
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
@@ -79,6 +80,10 @@ void shell()
 				case PROD_CONS:
 					putchar('\n');
 					start_producer_consumer_problem2();
+					break;
+				case PROD_CONS_PIPES:
+					putchar('\n');
+					olvidameVersionSO();
 					break;
 			}
 		}
@@ -212,6 +217,10 @@ int getCommands()
 		else if(strcmp(command, "prodCons"))
 		{
 			return PROD_CONS;
+		}
+		else if(strcmp(command, "a"))
+		{
+			return PROD_CONS_PIPES;
 		}
 	}
 	return COMMANDS_QUANTITY;
