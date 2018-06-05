@@ -152,7 +152,7 @@ int getCommands()
 		{
 			return PROD_CONS;
 		}
-		else if(strcmp(command, "a"))
+		else if(strcmp(command, "olvidame"))
 		{
 			return PROD_CONS_PIPES;
 		}

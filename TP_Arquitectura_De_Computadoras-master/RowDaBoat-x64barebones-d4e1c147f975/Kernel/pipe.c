@@ -159,25 +159,21 @@ void deletePipe(pipe_t pipe)
 
 int writePipe(pipe_t pipe, const char* msg, uint64_t amount)
 {
-    draw_word(pipe->name);
-    // mutex_lock(pipe->writeMutex);
-    // while (pipe->bufferSize >= MINPAGE)
-    // {
-    //     semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
-    // }
-    // mutex_lock(pipe->mutex);
-    //
-    // strcpy(pipe->buffer, msg, amount);
-    // draw_word(pipe->buffer);
-    // while(1);
-    // pipe->bufferSize = amount;
-    // semaphore_signal(pipe->readSemaphore);
-    // mutex_unlock(pipe->mutex);
-    // mutex_unlock(pipe->writeMutex);
-    // return 1;
+    mutex_lock(pipe->writeMutex);
+    while (pipe->bufferSize >= MINPAGE)
+    {
+        semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
+    }
+    mutex_lock(pipe->mutex);
+    strcpy(pipe->buffer, msg, amount);
+    pipe->bufferSize = amount;
+    semaphore_signal(pipe->readSemaphore);
+    mutex_unlock(pipe->mutex);
+    mutex_unlock(pipe->writeMutex);
+    return 1;
 }
 
-int readPipe(pipe_t pipe,char* ans,uint64_t amount)
+int readPipe(pipe_t pipe, char* ans, uint64_t amount)
 {
     int j;
     mutex_lock(pipe->readMutex);
@@ -186,12 +182,8 @@ int readPipe(pipe_t pipe,char* ans,uint64_t amount)
         semaphore_wait(pipe->readSemaphore,pipe->readMutex);
     }
     mutex_lock(pipe->mutex);
-    for(j=0; j < amount && pipe->bufferSize > 0;j++)
-    {
-        ans[j] = pipe->buffer[pipe->initialIndex%MINPAGE];
-        pipe->initialIndex = (pipe->initialIndex + 1)%MINPAGE;
-        pipe->bufferSize--;
-    }
+    strcpy(ans, pipe->buffer, pipe->bufferSize);
+    pipe->bufferSize = 0;
     semaphore_signal(pipe->writeSemaphore);
     mutex_unlock(pipe->mutex);
 

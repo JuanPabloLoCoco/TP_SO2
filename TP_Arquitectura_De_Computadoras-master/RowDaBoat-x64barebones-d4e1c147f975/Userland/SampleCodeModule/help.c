@@ -16,5 +16,5 @@ void help()
 	printf("   freeExample: allocation-free-allocation and checl if the address is the same\n\n");
 	printf("   ps: create and ps an address\n\n");
 	printf("   prodCons: test prodCons\n\n");
-	printf("   prodConsPipes: test prodCons with pipes\n\n");
+	printf("   olvidame: test prodCons with pipes\n\n");
 }
