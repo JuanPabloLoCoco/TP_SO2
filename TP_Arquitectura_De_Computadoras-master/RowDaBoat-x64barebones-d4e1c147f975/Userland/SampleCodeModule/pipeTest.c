@@ -4,8 +4,8 @@
 
 
 void writeString() {
-  givenAPipe();
-  givenAString();
+  // givenAPipe();
+  // givenAString();
 }
 
 void readString() {

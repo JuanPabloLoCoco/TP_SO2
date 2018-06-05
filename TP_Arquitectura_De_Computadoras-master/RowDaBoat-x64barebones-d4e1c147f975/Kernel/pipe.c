@@ -37,19 +37,16 @@ void initIPC()
 
 pipe_t createPipe(char* name)
 {
-    if(name[0]=='\0') return (pipe_t)0;
-    char mname[16]={'p','_'};
-    strcpy(mname+1,name,13);
-    mname[15]='\0';
+    if(name[0] == '\0') return (pipe_t)0;
+    char mname[16]={'p', '_'};
+    strcpy(mname + 1, name, 13);
+    mname[15] = '\0';
     pipe_t newPipe = buddyAllocate(sizeof(* newPipe));
     newPipe->name = buddyAllocate(MAX_PIPE_NAME+1);
-    strcpy(newPipe->name , name ,MAX_PIPE_NAME);
+    strcpy(newPipe->name , name , MAX_PIPE_NAME);
 
     newPipe->mutex = mutex_open(mname);
-    for (int i = 0; i < MINPAGE; i++)
-    {
-        newPipe->buffer[i] = 0;
-    }
+    newPipe->buffer = buddyAllocatePages(1);
     newPipe->bufferSize = 0;
     newPipe->initialIndex = 0;
 
@@ -68,7 +65,7 @@ pipe_t createPipe(char* name)
 
 int addPipe(pipe_t p)
 {
-    if(p==0)
+    if(p == 0)
     {
       return 0;
     }
@@ -104,7 +101,7 @@ pipe_t getPipe(char * name)
     pos = nextfreePipe(name);
     if(pos != -1)
     {
-        pipes[pos]= createPipe(name);
+        pipes[pos] = createPipe(name);
         mutex_unlock(pipeMutex);
         return pipes[pos];
     }
@@ -160,24 +157,24 @@ void deletePipe(pipe_t pipe)
     return;
 }
 
-int writePipe(pipe_t pipe,const char* msg, uint64_t amount)
+int writePipe(pipe_t pipe, const char* msg, uint64_t amount)
 {
-    int i;
-    mutex_lock(pipe->writeMutex);
-    while (pipe->bufferSize >= MINPAGE)
-    {
-        semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
-    }
-    mutex_lock(pipe->mutex);
-    for(i=0; i < amount;i++)
-    {
-      pipe->buffer[0] = msg[i];
-      pipe->bufferSize++;
-    }
-    semaphore_signal(pipe->readSemaphore);
-    mutex_unlock(pipe->mutex);
-    mutex_unlock(pipe->writeMutex);
-    return 1;
+    draw_word(pipe->name);
+    // mutex_lock(pipe->writeMutex);
+    // while (pipe->bufferSize >= MINPAGE)
+    // {
+    //     semaphore_wait(pipe->writeSemaphore,pipe->writeMutex);
+    // }
+    // mutex_lock(pipe->mutex);
+    //
+    // strcpy(pipe->buffer, msg, amount);
+    // draw_word(pipe->buffer);
+    // while(1);
+    // pipe->bufferSize = amount;
+    // semaphore_signal(pipe->readSemaphore);
+    // mutex_unlock(pipe->mutex);
+    // mutex_unlock(pipe->writeMutex);
+    // return 1;
 }
 
 int readPipe(pipe_t pipe,char* ans,uint64_t amount)

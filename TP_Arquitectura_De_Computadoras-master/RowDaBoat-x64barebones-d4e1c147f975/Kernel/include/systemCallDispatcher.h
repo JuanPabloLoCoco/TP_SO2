@@ -8,8 +8,10 @@
 #include <file.h>
 
 
-uint64_t sys_read(uint64_t fd, char* destination, uint64_t count);
-uint64_t sys_write(unsigned int fd, const char* buffer, uint64_t count);
+uint64_t sys_read(uint64_t fd, uint64_t destination, uint64_t count);
+uint64_t wrap_sys_read(uint64_t fd, char* destination, uint64_t count);
+uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t count);
+uint64_t wrap_sys_write(uint64_t fd, const char* buffer, uint64_t count);
 uint8_t sys_seconds(void);
 uint8_t sys_mins(void);
 uint8_t sys_hours(void);

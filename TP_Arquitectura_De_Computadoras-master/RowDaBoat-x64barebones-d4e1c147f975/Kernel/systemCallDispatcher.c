@@ -151,7 +151,12 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 		return result;
 }
 
-uint64_t sys_read(uint64_t fd, char* destination, uint64_t count)
+uint64_t sys_read(uint64_t fd, uint64_t destination, uint64_t count)
+{
+	return wrap_sys_read(fd, (char*) destination, count);
+}
+
+uint64_t wrap_sys_read(uint64_t fd, char* destination, uint64_t count)
 {
 	uint64_t i = 0;
 	char c = 0;
@@ -186,7 +191,12 @@ uint64_t sys_read(uint64_t fd, char* destination, uint64_t count)
   return i;
 }
 
-uint64_t sys_write(unsigned int fd, const char* buffer, uint64_t count)
+uint64_t sys_write(uint64_t fd, uint64_t buffer, uint64_t count)
+{
+	return wrap_sys_write(fd, (const char*) buffer, count);
+}
+
+uint64_t wrap_sys_write(uint64_t fd, const char* buffer, uint64_t count)
 {
 	int i = 0;
 	if(fd == 1)
