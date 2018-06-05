@@ -22,5 +22,6 @@ char isDir(file * f);
 char * getName(file * f);
 char * getSonsName(file * f);
 void initFileSystem();
+char nameDoesExistInCurrent(char * name);
 
 #endif

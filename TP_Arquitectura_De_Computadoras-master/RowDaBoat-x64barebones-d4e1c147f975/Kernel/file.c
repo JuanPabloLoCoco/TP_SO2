@@ -52,12 +52,15 @@ char * pathName(file * f)
 
 file * createDir(char * name , file * father)
 {
+  if (nameDoesExistInCurrent(name) != 1)
+  {
     file * new_file = (file *) buddyAllocate( sizeof(file));
     strcpy( new_file->name, name, MAX_FILE_NAME);
     new_file->father = father;
     new_file->sonsAmount = 0;
     new_file->isDir = 0;
     return new_file;
+  }
 }
 
 file * surfDirectory(char * name)
@@ -88,4 +91,15 @@ file * surfDirectory(char * name)
   }
 
   return currentDir;
+}
+
+char nameDoesExistInCurrent(char * name)
+{
+  for (int i = 0; i < currentDir->sonsAmount; i++) {
+    if (strcmp(name, currentDir->sons[i]->name) == 0)
+    {
+      return 1;
+    }
+  }
+  return 0;
 }
