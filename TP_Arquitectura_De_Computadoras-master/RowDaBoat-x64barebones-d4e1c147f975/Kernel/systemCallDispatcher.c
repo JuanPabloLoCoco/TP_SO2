@@ -514,7 +514,7 @@ uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)
 
 	if (resp == NULL || strcmp(father->name,(char *) name) == 0)
 	{
-		return (uint64_t)	(createFile((char *) name, father, isDir);
+		return (uint64_t)	createFile((char *) name, father, isDir);
 	}
 	else
 	{
@@ -558,7 +558,8 @@ uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index)
 	return (uint64_t)readFile(resp, index);
 }
 
-uint64_t sys_getFileInfo()
+uint64_t sys_getFileInfo(uint64_t * path)
 {
-	return get_file_info(struct )
+	file * thisFile = pathToFile((char *) path);
+	return get_file_info(struct file_info * fi, thisFile);
 }
