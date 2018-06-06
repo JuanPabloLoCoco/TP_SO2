@@ -43,7 +43,7 @@ uint16_t myBit(uint16_t n);
 uint16_t myMask(uint16_t n);
 
 uint16_t recursiveMark(int index);
-void addingRecursiveMark(int i);
+void addingRecursiveMark(int i, uint16_t n);
 void* addNblocks(uint8_t  n);
 void* recursiveAdd(int i, uint16_t n, uint64_t address, uint64_t innerSize);
 void releaseUp(int i, uint16_t level);

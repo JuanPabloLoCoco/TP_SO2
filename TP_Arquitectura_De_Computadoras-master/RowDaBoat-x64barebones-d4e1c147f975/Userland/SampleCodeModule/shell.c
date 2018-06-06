@@ -260,36 +260,6 @@ int getInts(int totalArgs)
 }
 
 
-/*int getTextAndFilename()
-{
-	int state = 0;
-	int i = 0, j = 0, k = 0;
-
-	for(i = 0; args[i]; i++)
-	{
-		if(args[i] != '>')
-		{
-			if(!state) 
-			{
-				textToWrite[j++] = args[i];
-			}
-			else 
-			{
-				fileToWrite[k++] = args[i];
-			}
-		}
-		else
-		{
-			state++;
-			if(state > 1) return 0;
-		}
-	}
-	textToWrite[j] = 0;
-	fileToWrite[k] = 0;
-	return (state == 1);
-}*/
-
-
 int getTextAndFilename()
 {
 	int state = 0;
@@ -297,7 +267,7 @@ int getTextAndFilename()
 
 	for(i = 0; args[i]; i++)
 	{
-		if(i == 0) 
+		if(i == 0)
 		{
 			if(args[i] != '\"') return 0;
 		}
