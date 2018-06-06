@@ -146,26 +146,26 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_cd(rsi);
 				break;
 			case 40:
-				result = sys_createFile(rsi, rdi, rdx);
+				result = sys_createFile(rsi);
 				break;
 			case 41:
 				result = sys_openFile(rsi,rdi,rdx);
-				break;
+				break:
 			case 42:
 				result = sys_closeFile(rsi, rdi);
-				break;
+				break:
 			case 43:
-				result = sys_readFile(rdi, rsi, rdx);
-				break;
+				result = sys_readFile(rsi, rdi, rdx,);
+				break:
 			case 44:
-				result = sys_writeFile(rdi, rsi, rdx, r8);
+				result = sys_writeFile(rsi,rdi,rdx,r8);
 				break;
-			// case 45:
-			// 	result = sys_removeFile();
-			// 	break;
-			// case 46:
-			// 	result = sys_getFileInfo();
-			// 	break;
+			case 45:
+				result = sys_removeFile();
+				break;
+			case 46:
+				result = sys_getFileInfo();
+				break;
 		}
 		return result;
 }
@@ -514,7 +514,7 @@ uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)
 
 	if (resp == NULL || strcmp(father->name,(char *) name) == 0)
 	{
-		return (uint64_t)	(createFile((char *) name, father, isDir));
+		return (uint64_t)	createFile((char *) name, father, isDir);
 	}
 	else
 	{
@@ -524,12 +524,12 @@ uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)
 
 uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state)
 {
-	file * fileToOPen = sys_createFile(path, name, NOT_DIR);
+	file * fileToOPen = createFile(path, file, NOT_DIR);
 	if (fileToOPen == NULL)
 	{
 		return NOTAFILE;
 	}
-	return openFile(fileToOPen, state);
+	return openFile(fileToOPen);
 }
 
 uint64_t sys_closeFile(uint64_t path, uint64_t name)
@@ -557,8 +557,20 @@ uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index)
 	}
 	return (uint64_t)readFile(resp, index);
 }
-//
-// uint64_t sys_getFileInfo()
-// {
-// 	return get_file_info(struct )
-// }
+
+uint64_t sys_getFileInfo(uint64_t * path)
+{
+	file * thisFile = pathToFile((char *) path);
+	return get_file_info(struct file_info * fi, thisFile);
+}
+
+uint64_t sys_removeFile(uint64_t path, uint64_t name)
+{
+	file * resp = getFileFromPath((char *) path, (char *) name);
+	if (resp == NULL)
+	{
+		return -1;
+	}
+	return (uint64_t)deleteFile(resp);
+
+}
