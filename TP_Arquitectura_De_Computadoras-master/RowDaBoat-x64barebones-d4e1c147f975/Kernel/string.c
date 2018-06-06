@@ -1,4 +1,5 @@
 #include "strings.h"
+#include "stdint.h"
 
 /* Converts num into a '\0' ended string in str parameter*/
 void intToString(char* str, int num)
@@ -96,7 +97,7 @@ void concat(char * str1, char * str2)
 		i++;
 		j++;
 	}
-	str1[i] ='\0'
+	str1[i] ='\0';
 }
 
 

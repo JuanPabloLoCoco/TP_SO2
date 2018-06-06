@@ -72,4 +72,9 @@ uint64_t sys_cd(uint64_t fileName);
 uint64_t sys_mkdir(uint64_t name);
 uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state);
 
+uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir);
+uint64_t sys_closeFile(uint64_t path, uint64_t name);
+uint64_t sys_writeFile(uint64_t path, uint64_t name, uint64_t bytes, uint64_t count);
+uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index);
+
 #endif

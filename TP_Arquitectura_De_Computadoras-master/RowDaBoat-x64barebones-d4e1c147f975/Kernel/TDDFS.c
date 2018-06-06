@@ -1,18 +1,15 @@
 #include <TDDFS.h>
-#include <file.h>
-#include <videoDriver.h>
-#include <strings.h>
-#include <defs.h>
 
-file * testFile = NULL
-FileBlock * freeBlocks2 = NULL;
-char * testFileName = "testFile"
+#include <buddyAllocator.h>
+
+file * testFile = NULL;
+fileBlock * freeBlocks2 = NULL;
+char * testFileName = "testFile";
 char * testText = "Prueba";
 
 void runFStest()
 {
     createDirTest();
-    testBlockFile();
     testWriteFile();
     testRead();
     deleteDirTest();
@@ -27,7 +24,6 @@ void createDirTest()
 void givenAFile()
 {
     testFile = createNotDir(testFileName, getHome());
-    return;
 }
 
 void thenVerifyCreation()
@@ -40,41 +36,10 @@ void thenVerifyCreation()
     draw_word("CREATION TEST PASSED");
 }
 
-void testBlockFile()
-{
-    whenAddBlock(testFile);
-    thenVerifyBlockAdd();
-}
-
-void whenAddBlock(File * thisFile)
-{
-    if (thisFile->blocks == NULL)
-    {
-        blocks = getBlock();
-        if (blocks == NULL)
-        {
-            thisFile->blocks = NULL;
-        }
-        else
-        {
-            addBlockToFile(thisFile, blocks);
-        }
-    }
-}
-
-void thenVerifyBlockAdd()
-{
-    if (testFile->block == NULL)}
-    {
-        draw_word("No more Memory on FileSystem. TEST FAIL\n");
-        return;
-    }
-    draw_word("Block was added. PASS TEST\n");
-}
 
 void testWriteFile()
 {
-    char * text = givenAtextToWrite()
+    char * text = givenAtextToWrite();
     // +1. strlen no suma al '\0';
     uint64_t count = strlen(text) + 1;
     uint64_t resp = whenWriteInFile(testFile,(void *) text, count);
@@ -86,7 +51,7 @@ char * givenAtextToWrite()
   return testText;
 }
 
-uint64_t whenWriteInFile(file * thisFile, void * bytes, uint64_t count)
+uint64_t whenWriteInFile(file * thisFile, char* bytes, uint64_t count)
 {
     return writeOnFile(thisFile, bytes, count);
 }
@@ -111,8 +76,8 @@ void testRead()
 {
     char * readText = (char *) buddyAllocate(64);
     whenFileIsRead(testFile,readText);
-    thenVerifyTextWasRead(text);
-    free(readText);
+    thenVerifyTextWasRead(readText);
+    buddyFree(readText);
 }
 
 void whenFileIsRead(file * file, char * text)
@@ -141,7 +106,7 @@ void thenVerifyTextWasRead(char * textRead)
 
 void deleteDirTest()
 {
-    uint64_t resp = whenFileisDelete();
+    uint64_t resp = whenFileIsDelete();
     thenVerifyFileIsDelete(resp);
 }
 

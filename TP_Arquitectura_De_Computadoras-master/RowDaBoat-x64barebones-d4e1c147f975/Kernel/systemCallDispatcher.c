@@ -152,13 +152,13 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_openFile(rsi,rdi,rdx);
 				break:
 			case 42:
-				result = sys_closeFile();
+				result = sys_closeFile(rsi, rdi);
 				break:
 			case 43:
-				result = sys_readFile();
+				result = sys_readFile(rsi, rdi, rdx,);
 				break:
 			case 44:
-				result = sys_writeFile();
+				result = sys_writeFile(rsi,rdi,rdx,r8);
 				break;
 			case 45:
 				result = sys_removeFile();
@@ -562,4 +562,15 @@ uint64_t sys_getFileInfo(uint64_t * path)
 {
 	file * thisFile = pathToFile((char *) path);
 	return get_file_info(struct file_info * fi, thisFile);
+}
+
+uint64_t sys_removeFile(uint64_t path, uint64_t name)
+{
+	file * resp = getFileFromPath((char *) path, (char *) name);
+	if (resp == NULL)
+	{
+		return -1;
+	}
+	return (uint64_t)deleteFile(resp);
+
 }
