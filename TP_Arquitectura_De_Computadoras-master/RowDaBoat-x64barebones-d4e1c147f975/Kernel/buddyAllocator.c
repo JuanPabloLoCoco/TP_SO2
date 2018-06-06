@@ -176,12 +176,25 @@ void* recursiveAdd(int i, uint16_t n, uint64_t address, uint64_t innerSize)
         }
         else
         {
-            heap[i - 1] = 0;
-            amountBlocks[ i - 1 - (heapSize/2)] = n;
+            addingRecursiveMark(i, n);
             return (void*)address;
         }
     }
     return ans;
+}
+
+void addingRecursiveMark(int i, uint16_t n) {
+    if(i <= heapSize) { //Belongs to the tree
+        heap[i - 1] = 0;
+
+        if(i > heapSize/2) { //It is a leave
+            amountBlocks[ i - 1 - (heapSize/2)] = n;
+        }
+        else {
+            addingRecursiveMark(RCHILD(i), n);
+            addingRecursiveMark(LCHILD(i), n);
+        }
+    }
 }
 
 int isInt(float f)
