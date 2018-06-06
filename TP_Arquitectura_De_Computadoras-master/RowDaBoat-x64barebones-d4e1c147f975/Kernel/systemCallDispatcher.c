@@ -10,7 +10,8 @@
 #include <defs.h>
 #include <ipc_info.h>
 #include <process_info.h>
-
+#include <file.h>
+#include <file_info.h>
 
 int getChar(void);
 void _sti(void);
@@ -145,7 +146,25 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_cd(rsi);
 				break;
 			case 40:
-				result = sys_mkdir(rsi);
+				result = sys_createFile(rsi);
+				break;
+			case 41:
+				result = sys_openFile(rsi,rdi,rdx);
+				break:
+			case 42:
+				result = sys_closeFile();
+				break:
+			case 43:
+				result = sys_readFile();
+				break:
+			case 44:
+				result = sys_writeFile();
+				break;
+			case 45:
+				result = sys_removeFile();
+				break;
+			case 46:
+				result = sys_getFileInfo();
 				break;
 		}
 		return result;
@@ -475,7 +494,7 @@ uint64_t sys_get_mutexes_info(mutex_info * info_array)
 /*------------------------DIRECTORY_SYSTEM ----------------------*/
 uint64_t sys_cd_wr(char * fileName)
 {
-	return (uint64_t) surfDirectory(fileName);
+	return (uint64_t) changeDirectory(fileName);
 }
 
 uint64_t sys_cd(uint64_t fileName)
@@ -483,7 +502,63 @@ uint64_t sys_cd(uint64_t fileName)
 	return sys_cd_wr((char *) fileName);
 }
 
-uint64_t sys_mkdir(uint64_t name)
+uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)
 {
-	return (uint64_t) (createDir((char *) name,(file *) sys_cd(".")));
+	file * father = pathToFile((char *) path);
+	if (father == NULL)
+	{
+		return (uint64_t) NULL;
+	}
+
+	file * resp = fileChild(father,(char *) name);
+
+	if (resp == NULL || strcmp(father->name,(char *) name) == 0)
+	{
+		return (uint64_t)	(createFile((char *) name, father, isDir);
+	}
+	else
+	{
+		return resp;
+	}
+}
+
+uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state)
+{
+	file * fileToOPen = createFile(path, file, NOT_DIR);
+	if (fileToOPen == NULL)
+	{
+		return NOTAFILE;
+	}
+	return openFile(fileToOPen);
+}
+
+uint64_t sys_closeFile(uint64_t path, uint64_t name)
+{
+	file * resp = getFileFromPath((char *) path, (char *) name);
+	return closeFile(resp);
+}
+
+uint64_t sys_writeFile(uint64_t path, uint64_t name, uint64_t bytes, uint64_t count)
+{
+	file * resp = getFileFromPath((char *) path, (char *) name);
+	if (resp == NULL)
+	{
+		return -1;
+	}
+	return writeOnFile(resp, (void *)bytes, count);
+}
+
+uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index)
+{
+	file * resp = getFileFromPath((char *) path, (char *) name);
+	if (resp == NULL)
+	{
+		return -1;
+	}
+	return (uint64_t)readFile(resp, index);
+}
+
+uint64_t sys_getFileInfo()
+{
+	return get_file_info(struct )
 }

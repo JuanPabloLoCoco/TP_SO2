@@ -82,6 +82,23 @@ int strcpyWithNoIndex(char *from, char *to)
 	return i;
 }
 
+void concat(char * str1, char * str2)
+{
+	uint64_t i = 0;
+	uint64_t j = 0;
+	while (str1[i] !='\0')
+	{
+		i++;
+	}
+	while (str2[j]!= '\0')
+	{
+		str1[i] = str2[j];
+		i++;
+		j++;
+	}
+	str1[i] ='\0'
+}
+
 
 void strCatNum(char* ans,char* str,int num)
 {

@@ -70,5 +70,6 @@ uint64_t sys_get_mutexes_info(mutex_info * info_array);
 uint64_t sys_cd_wr(char * fileName);
 uint64_t sys_cd(uint64_t fileName);
 uint64_t sys_mkdir(uint64_t name);
+uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state);
 
 #endif

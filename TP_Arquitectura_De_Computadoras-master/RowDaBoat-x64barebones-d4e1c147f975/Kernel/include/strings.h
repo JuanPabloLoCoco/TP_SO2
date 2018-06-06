@@ -26,4 +26,6 @@ int strlen(const char* str) ;
 int strcmp(char * s, char * t);
 int strncmp(char * s, char * t, unsigned int n);
 
+void concat(char * str1, char * str2);
+
 #endif
