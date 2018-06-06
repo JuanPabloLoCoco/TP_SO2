@@ -19,6 +19,8 @@ uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
 char command [COMMAND_MAX_LENGTH];
 char args[COMMANDS_MAX_ARGS+1];
+char textToWrite[COMMANDS_MAX_ARGS+1];
+char fileToWrite[COMMANDS_MAX_ARGS+1];
 int functionArgs[MAX_QUADRATIC_INTS];
 int width = 0;
 int height = 0;
@@ -152,10 +154,38 @@ int getCommands()
 		{
 			return PROD_CONS;
 		}
+		else if(strcmp(command, "cat"))
+		{
+			return CAT;
+		}
+		else if(strcmp(command, "mkdir"))
+		{
+			return CREATE_DIR;
+		}
+		else if(strcmp(command, "mkfile"))
+		{
+			return CREATE_FILE;
+		}
+		else if(strcmp(command, "cd"))
+		{
+			return CD;
+		}
+		else if(strcmp(command, "ls"))
+		{
+			return LS;
+		}
+		else if(strcmp(command, "write"))
+		{
+			if(getTextAndFilename())
+				return WRITE;
+			else
+				return COMMANDS_QUANTITY;
+		}
 		else if(strcmp(command, "olvidame"))
 		{
 			return PROD_CONS_PIPES;
 		}
+
 	}
 	return COMMANDS_QUANTITY;
 }
@@ -227,6 +257,42 @@ int getInts(int totalArgs)
 		}
 	}
 	return j;
+}
+
+
+int getTextAndFilename()
+{
+	int state = 0;
+	int i = 0, j = 0, k = 0;
+
+	for(i = 0; args[i]; i++)
+	{
+		if(i == 0)
+		{
+			if(args[i] != '\"') return 0;
+		}
+		else
+		{
+			if(!(args[i] == '\"' && args[i+1] == '>'))
+			{
+				if(!state) {
+					textToWrite[j++] = args[i];
+				}
+				else {
+					fileToWrite[k++] = args[i];
+				}
+			}
+			else
+			{
+				state++;
+				if(state > 1) return 0;
+				i++;
+			}
+		}
+	}
+	textToWrite[j] = 0;
+	fileToWrite[k] = 0;
+	return (state == 1);
 }
 
 /*turns the string starting in args at the position pos
@@ -358,6 +424,30 @@ void shell()
 				case PROD_CONS_PIPES:
 					putchar('\n');
 					olvidameVersionSO();
+					break;
+				case CAT:
+					//cat(args);
+					echo(args);
+					break;
+				case CREATE_DIR:
+					//createDir(args);
+					echo(args);
+					break;
+				case CREATE_FILE:
+					//createFile(args);
+					echo(args);
+					break;
+				case CD:
+					//cd(args);
+					echo(args);
+					break;
+				case LS:
+					//ls();
+					echo("");
+					break;
+				case WRITE:
+					//write(textToWrite, fileToWrite);
+					echo(textToWrite);
 					break;
 			}
 		}
