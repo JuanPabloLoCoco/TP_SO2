@@ -17,9 +17,15 @@
 #define PS_TEST 12
 #define PROD_CONS 13
 #define PROD_CONS_PIPES 14
+#define CAT 15
+#define CREATE_DIR 16
+#define CREATE_FILE 17
+#define CD 18
+#define LS 19
+#define WRITE 21
 #define COMMAND_MAX_LENGTH 20
-#define COMMANDS_QUANTITY 20
-#define COMMANDS_MAX_ARGS 50
+#define COMMANDS_QUANTITY 40
+#define COMMANDS_MAX_ARGS 1024
 #define MAX_LINEAR_INTS 2
 #define MAX_QUADRATIC_INTS 3
 #define MAX_COLOR_INTS 3
