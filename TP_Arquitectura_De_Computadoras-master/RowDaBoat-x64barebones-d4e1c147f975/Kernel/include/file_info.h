@@ -1,6 +1,9 @@
 #ifndef PROCESS_INFO_H
 #define PROCESS_INFO_H
 
+#include <file.h>
+#include <stdint.h>
+
 typedef struct file_info_c {
 
   char name[MAX_FILE_NAME];

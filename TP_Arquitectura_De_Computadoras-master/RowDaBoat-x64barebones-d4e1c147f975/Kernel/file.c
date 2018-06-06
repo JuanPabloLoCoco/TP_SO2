@@ -47,7 +47,7 @@ file * changeDirectory(char * name)
       return currentDir;
   }
 
-  for(uint64_t z = 0; z < currentDir->sonsAmount && flag ; z++)
+  for(uint64_t z = 0; z < currentDir->sonsAmount ; z++)
   {
       if (strcmp(name, currentDir->sons[z]->name) == 0 )
       {
@@ -68,7 +68,7 @@ file * createFile(char * name , file * father, uint64_t isDir)
     uint64_t resp = addSon(father, new_file);
     if (resp > 0 )
     {
-        free(file);
+        buddyFree(new_file);
         //deleteFile(new_file);
         return NULL;
     }
@@ -92,7 +92,7 @@ uint64_t addSon(file * father, file * son)
 
     if (father->sonsAmount == MAX_SONS)
     {
-        return NO_MORE_CHILD_ERR
+        return NO_MORE_CHILD_ERR;
     }
 
     father->sons[father->sonsAmount] = son;
@@ -121,7 +121,7 @@ uint64_t deleteFile(file * fileToDelete)
 
     if (resp == 0)
     {
-        deleteMyFatherReference(fileToDelete);
+        deleteMyFatherReference(fileToDelete->father, fileToDelete);
     }
     return resp;
 }
@@ -150,7 +150,7 @@ static uint64_t deleteFile_wr(file * fileToDelete)
         }
     }
 
-    free(fileToDelete);
+    buddyFree(fileToDelete);
     return 0;
 }
 
@@ -192,12 +192,12 @@ fileBlock * getBlock()
 
 void realeseBlock(fileBlock * block)
 {
-  block->index = 0;
+  block->size = 0;
   block->next = freeBlocks;
   freeBlocks = block;
 }
 
-void realeseFreeBlocks(File * file)
+void realeseFreeBlocks(file * file)
 {
   uint64_t blockIndex = 0;
   fileBlock * currentBlock = file->blocks;
@@ -260,8 +260,8 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
 {
     if (thisFile->blocks == NULL)
     {
-        thisFile->block = getBlock();
-        if (thisFile->block = NULL)
+        thisFile->blocks = getBlock();
+        if (thisFile->blocks = NULL)
         {
           return count;
         }
@@ -273,18 +273,18 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
 
     while (count > 0)
     {
-        current->adress[index%BLOCKSIZE] = bytes[index];
+        current->adress[index % BLOCKSIZE] = ((char*)bytes)[index];
         count--;
         index++;
 
-        if (index%BLOCKSIZE == 0 and count > 0)
+        if (index%BLOCKSIZE == 0 && count > 0)
         {
             if (current->next == NULL)
             {
                 current->next = getBlock();
                 if ( current->next == NULL)
                 {
-                    current->adress[(index -1) %BLOCKSIZE] = EOF;
+                    current->adress[(index -1) %BLOCKSIZE] = (char*)EOF;
                     return count - 1;
                 }
             }
@@ -300,7 +300,7 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
             current->next = getBlock();
             if ( current->next == NULL)
             {
-                current->adress[(index-1)%BLOCKSIZE] = EOF;
+                current->adress[(index-1)%BLOCKSIZE] = (char*)EOF;
                 return count -1;
             }
         }
@@ -313,7 +313,7 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
 
 /******************READ ON FILE ***************/
 
-void * readFile(File * file, uint64_t index)
+void * readFile(file * file, uint64_t index)
 {
     fileBlock * currentBlock = file->blocks;
 
@@ -322,7 +322,7 @@ void * readFile(File * file, uint64_t index)
         return EOF;
     }
 
-    if (currentBlock == NULL || currentIndex == 0)
+    if (currentBlock == NULL)
     {
         return EOF;
     }
@@ -336,7 +336,7 @@ void * readFile(File * file, uint64_t index)
             return EOF;
         }
     }
-    return currentBlock->adress[index%BLOCKSIZE];
+    return (void*)(currentBlock->adress[index%BLOCKSIZE]);
 }
 
 /******************OPEN FILE && CLOSE FILE************/
@@ -432,7 +432,7 @@ char isDir(file * f)
 }
 
 
-char * pathName(file * f, char * resp)
+char* pathName(file * f, char * resp)
 {
     if (f == home)
     {
@@ -441,7 +441,7 @@ char * pathName(file * f, char * resp)
     }
 
     concat(pathName(f->father, resp), '/');
-    concat(resp, f->file);
+    concat(resp, f->name);
     return resp;
 }
 
@@ -453,7 +453,7 @@ file * pathToFile(char * pathName)
 
     uint64_t x = 0;
     uint64_t index = 0;
-    uint64_t initialFlag = TRUE
+    uint64_t initialFlag = TRUE;
 
     while (pathName[x]!= '\0')
     {

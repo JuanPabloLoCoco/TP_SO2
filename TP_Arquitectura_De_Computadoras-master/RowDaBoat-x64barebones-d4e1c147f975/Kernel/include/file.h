@@ -1,6 +1,8 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include <process.h>
+
 #define MAX_FILE_NAME 20
 #define MAX_SONS 16
 #define MAX_FILES 128
@@ -9,8 +11,8 @@
 #define BLOCKSIZE 4 * 1024
 #define BLOCKCOUNT 256
 
-#define DIR 0;
-#define NOT_DIR 1;
+#define DIR 0
+#define NOT_DIR 1
 
 #define CLOSE 0
 #define READ 1
@@ -20,6 +22,12 @@
 #define NOTAFILE -1
 #define OPEN_IN_OTHER_PROCESS_ERR 5
 #define NO_MORE_CHILD_ERR 2
+
+typedef struct fileBlock_t{
+	char * adress;
+	struct fileBlock * next;
+	uint64_t size;
+} fileBlock;
 
 typedef struct file_t{
 	char name[MAX_FILE_NAME];
@@ -34,12 +42,6 @@ typedef struct file_t{
 } file;
 //faltaria MEMORIA.
 
-
-typedef struct fileBlock{
-  void * adress;
-  FileBlock * next;
-  uint64_t size;
-};
 
 void initFileSystem();
 
@@ -56,7 +58,7 @@ void deleteMyFatherReference(file * father, file * son);
 
 fileBlock * getBlock();
 void realeseBlock(fileBlock * block);
-void realeseFreeBlocks(File * file);
+void realeseFreeBlocks(file * file);
 void realseAllBlocks(file * fileToDelete);
 void initializeFileBlocks();
 
@@ -71,7 +73,7 @@ file * getCurrentDir();
 file * getHome();
 char * getName(file * f);
 char isDir(file * f);
-char * pathName(file * f);
+char* pathName(file * f, char * resp);
 file * pathToFile(char * pathName);
 file * fileChild(file * thisFile,char * bufferDir);
 file * getFileFromPath(char * pathName, char * name);
