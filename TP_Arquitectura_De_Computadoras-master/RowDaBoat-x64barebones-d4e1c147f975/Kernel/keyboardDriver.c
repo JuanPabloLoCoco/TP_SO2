@@ -16,6 +16,10 @@ static int capsLockPressed = FALSE;
 static int capsLockPressedCount = 0;
 static int capsLockActivated = FALSE;
 
+uint16_t index = 0;
+static int count = 0;
+uint16_t read = 0;
+
 
 void keyboard_handler()
 {
@@ -37,7 +41,8 @@ void keyboard_handler()
     if(!processKeyScanCode(k))
 		{
 			//caso de un caracter a imprimir en pantalla
-
+			count++;
+	    
 			buff_size++;
 			// guarda el scancode de la tecla
 			buffer[store_index++] = k;
@@ -45,6 +50,15 @@ void keyboard_handler()
       unblock_read_process(get_foreground_process());
 		}
   }
+	if(k > 0 && k == BACKSPACECODE) {
+	    buffer[index] = '\b';
+	    incrementIndex();
+	    if(count > 0){
+	      count--;
+	      erase_char();
+	    }
+
+	  }
 	else if (k < 0)
 	{
 			/*Se solto una tecla */
@@ -140,4 +154,11 @@ int isAlpha(char k)
 		return TRUE;
 	}
   return FALSE;
+}
+
+void incrementIndex(){
+  if((index + 1 %256) != read) {
+    index ++;
+    index = index%256;
+  }
 }
