@@ -304,6 +304,10 @@ static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
     //
     // }
     strcpy(current->adress, bytes,count);
+
+    draw_word("Texto escrito =");
+    draw_word(current->adress);
+    draw_word("\n");
     current->adress[count] = EOF;
     thisFile->index = count;
     // if (index%BLOCKSIZE == 0)
@@ -325,6 +329,30 @@ static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
 }
 
 /******************READ ON FILE ***************/
+uint64_t readFile2(file * f, char * buffer, uint64_t count)
+{
+  if (f == NULL)
+  {
+    return EOF;
+  }
+
+  fileBlock * currentBlock = f->blocks;
+
+  if (currentBlock == NULL)
+  {
+      return EOF;
+  }
+  //
+  draw_word("Texto a leer = ");
+  draw_word(currentBlock->adress);
+  draw_word("\n");
+  strcpy(buffer, currentBlock->adress, count);
+    //strcpyWithNoIndex(buffer, currentBlock->adress);
+
+
+  return strlen(buffer) + 1;
+
+}
 
 char readFile(file * file, uint64_t index)
 {

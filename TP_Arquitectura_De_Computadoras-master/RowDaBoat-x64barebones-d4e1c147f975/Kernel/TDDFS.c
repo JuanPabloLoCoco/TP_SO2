@@ -11,7 +11,7 @@ void runFStest()
     createDirTest();
     testWriteFile();
     testRead();
-    // deleteDirTest();
+    deleteDirTest();
 }
 
 void createDirTest()
@@ -77,7 +77,7 @@ void testRead()
     char * readText = (char *) buddyAllocate(64);
     whenFileIsRead(testFile,readText);
     draw_word(readText);
-    while(1);
+    draw_word("\n");
     thenVerifyTextWasRead(readText);
     buddyFree(readText);
 }
@@ -85,20 +85,36 @@ void testRead()
 void whenFileIsRead(file * file, char * text)
 {
     uint64_t index = 0;
-    char c;
-    while ( (c = readFile(file, index)) != EOF )
-    {
-        draw_char(c);
-        text[index] = c;
-        index++;
-    }
-    text[index] ='\0';
+    // draw_word("Texto a leer: ");
+    // draw_word(file->blocks->adress);
+    // printNum(strlen(file->blocks->adress));
+    // draw_word("\n");
+    //
+    // draw_word("Texto a leer: ");
+    // strcpy(text,file->blocks->adress,strlen(file->blocks->adress));
+    // draw_word(file->blocks->adress);
+    //draw_word("\n");
+
+    uint64_t resp = readFile2(file, text, strlen(file->blocks->adress)+1);
+    // while ( (c = readFile(file, index)) != EOF )
+    // {
+    //     draw_char(c);
+    //     text[index] = c;
+    //     index++;
+    // }
+    // text[index] ='\0';
 }
 
 void thenVerifyTextWasRead(char * textRead)
 {
+    draw_word(textRead);
+    draw_word(" = ");
+    draw_word(testText);
+    draw_word("\n");
+
     if (strcmp(testRead, testText) == 0)
     {
+
         draw_word("Test de Lectura fue exitoso \n");
     }
     else
@@ -126,4 +142,5 @@ void thenVerifyFileIsDelete(uint64_t resp)
         return;
     }
     draw_word("Deletion Faile");
+
 }
