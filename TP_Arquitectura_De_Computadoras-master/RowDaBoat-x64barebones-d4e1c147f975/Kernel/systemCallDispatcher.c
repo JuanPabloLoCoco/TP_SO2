@@ -494,7 +494,13 @@ uint64_t sys_get_mutexes_info(mutex_info * info_array)
 /*------------------------DIRECTORY_SYSTEM ----------------------*/
 uint64_t sys_cd_wr(char * fileName)
 {
-	return (uint64_t) changeDirectory(fileName);
+	file * resp = changeDirectory(fileName);
+	if (resp == NULL)
+	{
+		return "/home";
+	}
+	char ans[128];
+	return (uint64_t) pathName(resp, ans);
 }
 
 uint64_t sys_cd(uint64_t fileName)

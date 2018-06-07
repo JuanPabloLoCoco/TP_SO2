@@ -5,6 +5,7 @@
 
 #include "process_info.h"
 #include "ipc_info.h"
+#include "file_info.h"
 
 #define STDOUT 0
 #define STDIN 1
@@ -90,5 +91,21 @@ int get_semaphore_info(semaphore_info info_array[]);
 int get_mutexes_info(mutex_info info_array[]);
 
 int semaphore_close(int key);
+
+char * cd( char * pathName);
+
+int sys_createFile(char * path, char * fileName, uint64_t isDir);
+
+int sys_openFile(char * path, char * name ,uint64_t state);
+
+int sys_closeFile(char * path, char * name);
+
+int sys_readFile(char * path, char * name, uint64_t index);
+
+int sys_writeFile(char * path, char * name, char * bytes, uint64_t count);
+
+int sys_removeFile(char * path, char * name);
+
+int sys_getFileInfo(char * path, struct file_info_c * fi);
 
 #endif

@@ -64,7 +64,7 @@ void initializeFileBlocks();
 
 uint64_t writeOnFile(file * thisFile, char * bytes, uint64_t count);
 
-void * readFile(file * file, uint64_t index);
+char readFile(file * file, uint64_t index);
 
 uint64_t openFile(file * thisFile, uint64_t state);
 uint64_t closeFile(file * thisFile);

@@ -2,6 +2,7 @@
 #include <syscalls.h>
 #include <stdlib.h>
 #include <ipc_info.h>
+#include <file_info.h>
 
 extern uint64_t _int80(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
@@ -202,4 +203,51 @@ int get_mutexes_info(mutex_info info_array[])
 int semaphore_close(int key)
 {
   return _int80(38, key, 0, 0, 0, 0);
+}
+
+char * cd( char * pathName)
+{
+  return (char *)_int80(38,(uint64_t) pathName, 0, 0, 0, 0);
+}
+
+int sys_createFile(char * path, char * fileName, uint64_t isDir)
+{
+  return _int80(40, (uint64_t) path, (uint64_t) fileName, isDir, 0, 0);
+
+}
+
+int sys_openFile(char * path, char * name ,uint64_t state)
+{
+  return _int80(41, (uint64_t)path, (uint64_t) name, state, 0, 0);
+
+}
+
+int sys_closeFile(char * path, char * name)
+{
+  return _int80(42, (uint64_t)path,(uint64_t) name, 0, 0, 0);
+}
+
+
+int sys_readFile(char * path, char * name, uint64_t index)
+{
+  return _int80(43, (uint64_t) path, (uint64_t) name, index, 0, 0);
+
+}
+
+int sys_writeFile(char * path, char * name, char * bytes, uint64_t count)
+{
+  return _int80(44, (uint64_t)path,(uint64_t) name, (uint64_t) bytes, count, 0);
+
+}
+
+int sys_removeFile(char * path, char * name)
+{
+  return _int80(45, (uint64_t)path, (uint64_t) name, 0, 0, 0);
+
+}
+
+int sys_getFileInfo(char * path, struct file_info_c * fi)
+{
+  return _int80(46, (uint64_t) path, (uint64_t)fi, 0, 0, 0);
+
 }

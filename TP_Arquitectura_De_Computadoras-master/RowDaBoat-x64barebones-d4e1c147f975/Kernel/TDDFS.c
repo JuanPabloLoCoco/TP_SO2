@@ -29,10 +29,10 @@ void thenVerifyCreation()
 {
     if (testFile == NULL)
     {
-        draw_word("CREATION TEST FAIL");
+        draw_word("CREATION TEST FAIL\n");
         return;
     }
-    draw_word("CREATION TEST PASSED");
+    draw_word("CREATION TEST PASSED\n");
 }
 
 
@@ -77,7 +77,6 @@ void testRead()
     char * readText = (char *) buddyAllocate(64);
     whenFileIsRead(testFile,readText);
     draw_word(readText);
-    draw_word('\n');
     while(1);
     thenVerifyTextWasRead(readText);
     buddyFree(readText);
@@ -87,8 +86,9 @@ void whenFileIsRead(file * file, char * text)
 {
     uint64_t index = 0;
     char c;
-    while ( (c = (char *)readFile(file, index)) != EOF )
+    while ( (c = readFile(file, index)) != EOF )
     {
+        draw_char(c);
         text[index] = c;
         index++;
     }
@@ -99,7 +99,7 @@ void thenVerifyTextWasRead(char * textRead)
 {
     if (strcmp(testRead, testText) == 0)
     {
-        draw_word(" Test de Lectura fue exitoso \n");
+        draw_word("Test de Lectura fue exitoso \n");
     }
     else
     {

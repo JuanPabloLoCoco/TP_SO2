@@ -262,6 +262,10 @@ uint64_t writeOnFile(file * thisFile, char * bytes, uint64_t count)
 
 static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
 {
+    if (count >BLOCKSIZE)
+    {
+      return EOF;
+    }
     if (thisFile->blocks == NULL)
     {
 
@@ -278,8 +282,7 @@ static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
     uint64_t auxCount = count;
     // while (auxCount > 0)
     // {
-    //     current->adress[index % BLOCKSIZE] = (char *)bytes[index];
-    //     draw_word((char)bytes[index]);
+    //     strcpy(current->adress[index % BLOCKSIZE], bytes[index],1);
     //     auxCount--;
     //     index++;
     //
@@ -290,43 +293,40 @@ static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
     //             current->next = getBlock();
     //             if ( current->next == NULL)
     //             {
-    //                 current->adress[(index -1) % BLOCKSIZE] = (char*)EOF;
+    //                 strcpy(current->adress[(index-1) % BLOCKSIZE],(char*)EOF,1);
+    //                 //current->adress[(index -1) % BLOCKSIZE] = ;
     //                 return auxCount - 1;
     //             }
     //         }
     //         current = current->next;
     //
     //     }
-
+    //
     // }
-      strcpy(current->adress, bytes,count);
+    strcpy(current->adress, bytes,count);
+    current->adress[count] = EOF;
+    thisFile->index = count;
+    // if (index%BLOCKSIZE == 0)
+    // {
+    //   if (current->next == NULL)
+    //   {
+    //       current->next = getBlock();
+    //       if ( current->next == NULL)
+    //       {
+    //           current->adress[(index-1)%BLOCKSIZE] = (char*)EOF;
+    //           return auxCount -1;
+    //       }
+    //   }
+    //   current = current->next;
+    // }
 
-      draw_word(current->adress);
-      printNum(index);
-      draw_word("\n");
-      while(1);
-
-      if (index%BLOCKSIZE == 0)
-      {
-        if (current->next == NULL)
-        {
-            current->next = getBlock();
-            if ( current->next == NULL)
-            {
-                current->adress[(index-1)%BLOCKSIZE] = (char*)EOF;
-                return auxCount -1;
-            }
-        }
-        current = current->next;
-      }
-
-      current->adress[index%BLOCKSIZE] = EOF;
-      return auxCount;
+    // current->adress[index%BLOCKSIZE] = EOF;
+    return 0;
 }
 
 /******************READ ON FILE ***************/
 
-void * readFile(file * file, uint64_t index)
+char readFile(file * file, uint64_t index)
 {
     fileBlock * currentBlock = file->blocks;
 
@@ -349,7 +349,7 @@ void * readFile(file * file, uint64_t index)
             return EOF;
         }
     }
-    return (void*)(currentBlock->adress[index%BLOCKSIZE]);
+    return ((char)currentBlock->adress[index%BLOCKSIZE]);
 }
 
 /******************OPEN FILE && CLOSE FILE************/
@@ -445,7 +445,7 @@ char isDir(file * f)
 }
 
 
-char* pathName(file * f, char * resp)
+char * pathName(file * f, char * resp)
 {
     if (f == home)
     {
