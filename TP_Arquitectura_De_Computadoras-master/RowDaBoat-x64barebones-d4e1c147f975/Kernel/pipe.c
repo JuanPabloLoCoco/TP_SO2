@@ -48,7 +48,6 @@ pipe_t createPipe(char* name)
     newPipe->mutex = mutex_open(mname);
     newPipe->buffer = buddyAllocatePages(1);
     newPipe->bufferSize = 0;
-    newPipe->initialIndex = 0;
 
     mname[0]='R';
     newPipe->readMutex = mutex_open(mname);

@@ -13,7 +13,6 @@
 typedef struct{
     char* buffer;
     int bufferSize;
-    int initialIndex;
     int mutex;
     int readMutex;
     int writeMutex;
