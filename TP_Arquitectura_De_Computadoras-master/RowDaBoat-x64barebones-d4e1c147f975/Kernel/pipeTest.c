@@ -7,7 +7,6 @@
 int fd;
 pipe_t testPipe = (pipe_t)0;
 char * testPipeName = "testPipe";
-char * testText = "Prueba";
 
 void runPipeTest()
 {
@@ -18,7 +17,7 @@ void runPipeTest()
 void pipeCreationTest()
 {
   givenAPipe();
-  thenVerifyCreation();
+  thenVerifyPipeCreation();
 }
 
 void givenAPipe()
@@ -26,7 +25,7 @@ void givenAPipe()
   sys_openPipe((uint64_t ) testPipeName, (uint64_t) &fd);
 }
 
-void thenVerifyCreation()
+void thenVerifyPipeCreation()
 {
   int aux = whereIsPipe(testPipeName);
   if (aux == -1)
@@ -42,5 +41,5 @@ void thenVerifyCreation()
 
 void writeReadTest()
 {
-  
+
 }

@@ -4,6 +4,6 @@
 void runPipeTest();
 void pipeCreationTest();
 void givenAPipe();
-void thenVerifyCreation();
+void thenVerifyPipeCreation();
 
 #endif
