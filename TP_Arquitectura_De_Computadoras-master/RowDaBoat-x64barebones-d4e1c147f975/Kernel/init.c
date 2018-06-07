@@ -9,6 +9,7 @@
 #include <buddyAllocator.h>
 #include <pipe.h>
 #include <semaphore.h>
+#include <TDDFS.h>
 
 static void * const sampleCodeModuleAddress = (void *) CODE_ADDRESS;
 
@@ -19,8 +20,11 @@ void init() {
 	initialize_semaphore();
 	initialize_process_mutex();
 	initIPC();
+	runFStest();
 
 	_sti();
+
+
 	sys_exec((uint64_t)sampleCodeModuleAddress, 0, "shell");
 	set_foreground_process (get_process_by_pid(1));
 	while (1) {

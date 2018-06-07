@@ -13,7 +13,7 @@ static fileBlock * freeBlocks = NULL;
 
 static int mutex = 0;
 
-static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count);
+static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count);
 static uint64_t deleteFile_wr(file * fileToDelete);
 
 
@@ -65,9 +65,13 @@ file * changeDirectory(char * name)
 file * createFile(char * name , file * father, uint64_t isDir)
 {
     file * new_file = (file *) buddyAllocate( sizeof(file));
-    uint64_t resp = addSon(father, new_file);
+    uint64_t resp = 0;
+    if(father != NULL){
+      resp = addSon(father, new_file);
+    }
     if (resp > 0 )
     {
+        draw_word("Elimina file creado\n");
         buddyFree(new_file);
         //deleteFile(new_file);
         return NULL;
@@ -249,19 +253,20 @@ void initializeFileBlocks()
 
 /****************write On File *************/
 
-uint64_t writeOnFile(file * thisFile, void * bytes, uint64_t count)
+uint64_t writeOnFile(file * thisFile, char * bytes, uint64_t count)
 {
     uint64_t resp = writeOnFile_wr(thisFile, bytes, count);
     thisFile->index = count - resp;
     realeseFreeBlocks(thisFile);
 }
 
-static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
+static uint64_t writeOnFile_wr(file * thisFile, char * bytes, uint64_t count)
 {
     if (thisFile->blocks == NULL)
     {
+
         thisFile->blocks = getBlock();
-        if (thisFile->blocks = NULL)
+        if (thisFile->blocks == NULL)
         {
           return count;
         }
@@ -270,28 +275,36 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
     fileBlock * current = thisFile->blocks;
 
     uint64_t index = 0;
+    uint64_t auxCount = count;
+    // while (auxCount > 0)
+    // {
+    //     current->adress[index % BLOCKSIZE] = (char *)bytes[index];
+    //     draw_word((char)bytes[index]);
+    //     auxCount--;
+    //     index++;
+    //
+    //     if (index%BLOCKSIZE == 0 && auxCount > 0)
+    //     {
+    //         if (current->next == NULL)
+    //         {
+    //             current->next = getBlock();
+    //             if ( current->next == NULL)
+    //             {
+    //                 current->adress[(index -1) % BLOCKSIZE] = (char*)EOF;
+    //                 return auxCount - 1;
+    //             }
+    //         }
+    //         current = current->next;
+    //
+    //     }
 
-    while (count > 0)
-    {
-        current->adress[index % BLOCKSIZE] = ((char*)bytes)[index];
-        count--;
-        index++;
+    // }
+      strcpy(current->adress, bytes,count);
 
-        if (index%BLOCKSIZE == 0 && count > 0)
-        {
-            if (current->next == NULL)
-            {
-                current->next = getBlock();
-                if ( current->next == NULL)
-                {
-                    current->adress[(index -1) %BLOCKSIZE] = (char*)EOF;
-                    return count - 1;
-                }
-            }
-            current = current->next;
-        }
-
-      }
+      draw_word(current->adress);
+      printNum(index);
+      draw_word("\n");
+      while(1);
 
       if (index%BLOCKSIZE == 0)
       {
@@ -301,14 +314,14 @@ static uint64_t writeOnFile_wr(file * thisFile, void * bytes, uint64_t count)
             if ( current->next == NULL)
             {
                 current->adress[(index-1)%BLOCKSIZE] = (char*)EOF;
-                return count -1;
+                return auxCount -1;
             }
         }
         current = current->next;
       }
 
       current->adress[index%BLOCKSIZE] = EOF;
-      return count;
+      return auxCount;
 }
 
 /******************READ ON FILE ***************/

@@ -3,7 +3,6 @@
 #include <buddyAllocator.h>
 
 file * testFile = NULL;
-fileBlock * freeBlocks2 = NULL;
 char * testFileName = "testFile";
 char * testText = "Prueba";
 
@@ -12,7 +11,7 @@ void runFStest()
     createDirTest();
     testWriteFile();
     testRead();
-    deleteDirTest();
+    // deleteDirTest();
 }
 
 void createDirTest()
@@ -40,9 +39,10 @@ void thenVerifyCreation()
 void testWriteFile()
 {
     char * text = givenAtextToWrite();
-    // +1. strlen no suma al '\0';
+    // +1. strlen no suma al '\0'
     uint64_t count = strlen(text) + 1;
-    uint64_t resp = whenWriteInFile(testFile,(void *) text, count);
+
+    uint64_t resp = whenWriteInFile(testFile,text, count);
     thenVerifyTextWasWtitten(count, resp);
 }
 
@@ -51,7 +51,7 @@ char * givenAtextToWrite()
   return testText;
 }
 
-uint64_t whenWriteInFile(file * thisFile, char* bytes, uint64_t count)
+uint64_t whenWriteInFile(file * thisFile, char * bytes, uint64_t count)
 {
     return writeOnFile(thisFile, bytes, count);
 }
@@ -76,6 +76,9 @@ void testRead()
 {
     char * readText = (char *) buddyAllocate(64);
     whenFileIsRead(testFile,readText);
+    draw_word(readText);
+    draw_word('\n');
+    while(1);
     thenVerifyTextWasRead(readText);
     buddyFree(readText);
 }

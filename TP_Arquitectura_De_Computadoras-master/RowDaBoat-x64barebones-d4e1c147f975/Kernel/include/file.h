@@ -62,7 +62,7 @@ void realeseFreeBlocks(file * file);
 void realseAllBlocks(file * fileToDelete);
 void initializeFileBlocks();
 
-uint64_t writeOnFile(file * thisFile, void * bytes, uint64_t count);
+uint64_t writeOnFile(file * thisFile, char * bytes, uint64_t count);
 
 void * readFile(file * file, uint64_t index);
 
