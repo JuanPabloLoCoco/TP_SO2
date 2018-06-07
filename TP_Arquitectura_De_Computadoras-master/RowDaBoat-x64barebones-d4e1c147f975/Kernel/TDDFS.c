@@ -139,10 +139,8 @@ void thenVerifyFileIsDelete(uint64_t resp)
     if (resp == 0)
     {
         draw_word("Deletion Of TestFile Was sucesfull \n");
-        while(1);
         return;
     }
     draw_word("Deletion Faile");
-    while(1);
 
 }

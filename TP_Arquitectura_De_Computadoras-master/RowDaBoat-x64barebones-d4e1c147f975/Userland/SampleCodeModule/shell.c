@@ -41,7 +41,7 @@ void setUpShell()
 /*prints the prompt*/
 void printPrompt()
 {
-	printf("%s / \n", getCurrentDir());
+	//printf("%s / \n", getCurrentDir());
 	printf("$>");
 }
 
