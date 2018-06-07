@@ -76,5 +76,7 @@ uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir);
 uint64_t sys_closeFile(uint64_t path, uint64_t name);
 uint64_t sys_writeFile(uint64_t path, uint64_t name, uint64_t bytes, uint64_t count);
 uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index);
+uint64_t sys_getFileInfo(uint64_t * path, uint64_t fi);
+uint64_t sys_removeFile(uint64_t path, uint64_t name);
 
 #endif

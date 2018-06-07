@@ -146,25 +146,25 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_cd(rsi);
 				break;
 			case 40:
-				result = sys_createFile(rsi);
+				result = sys_createFile(rsi, rdi, rdx);
 				break;
 			case 41:
 				result = sys_openFile(rsi,rdi,rdx);
-				break:
+				break;
 			case 42:
 				result = sys_closeFile(rsi, rdi);
-				break:
+				break;
 			case 43:
-				result = sys_readFile(rsi, rdi, rdx,);
-				break:
+				result = sys_readFile(rsi, rdi, rdx);
+				break;
 			case 44:
 				result = sys_writeFile(rsi,rdi,rdx,r8);
 				break;
 			case 45:
-				result = sys_removeFile();
+				result = sys_removeFile(rsi, rdi);
 				break;
 			case 46:
-				result = sys_getFileInfo();
+				result = sys_getFileInfo(rsi, rdi);
 				break;
 		}
 		return result;
@@ -524,12 +524,12 @@ uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)
 
 uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state)
 {
-	file * fileToOPen = createFile(path, file, NOT_DIR);
+	file * fileToOPen = (file *) sys_createFile(path, name, NOT_DIR);
 	if (fileToOPen == NULL)
 	{
 		return NOTAFILE;
 	}
-	return openFile(fileToOPen);
+	return openFile(fileToOPen, state);
 }
 
 uint64_t sys_closeFile(uint64_t path, uint64_t name)
@@ -558,10 +558,10 @@ uint64_t sys_readFile(uint64_t path, uint64_t name, uint64_t index)
 	return (uint64_t)readFile(resp, index);
 }
 
-uint64_t sys_getFileInfo(uint64_t * path)
+uint64_t sys_getFileInfo(uint64_t * path, uint64_t fi)
 {
 	file * thisFile = pathToFile((char *) path);
-	return get_file_info(struct file_info * fi, thisFile);
+	return get_file_info((struct file_info_c *) (fi), thisFile);
 }
 
 uint64_t sys_removeFile(uint64_t path, uint64_t name)
