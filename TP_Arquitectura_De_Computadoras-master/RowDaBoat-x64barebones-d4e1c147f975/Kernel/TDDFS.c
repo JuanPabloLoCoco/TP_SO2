@@ -76,8 +76,6 @@ void testRead()
 {
     char * readText = (char *) buddyAllocate(64);
     whenFileIsRead(testFile,readText);
-    draw_word(readText);
-    while(1);
     thenVerifyTextWasRead(readText);
     buddyFree(readText);
 }
@@ -85,14 +83,24 @@ void testRead()
 void whenFileIsRead(file * file, char * text)
 {
     uint64_t index = 0;
-    char c;
-    while ( (c = readFile(file, index)) != EOF )
-    {
-        draw_char(c);
-        text[index] = c;
-        index++;
-    }
-    text[index] ='\0';
+    // draw_word("Texto a leer: ");
+    // draw_word(file->blocks->adress);
+    // printNum(strlen(file->blocks->adress));
+    // draw_word("\n");
+    //
+    // draw_word("Texto a leer: ");
+    // strcpy(text,file->blocks->adress,strlen(file->blocks->adress));
+    // draw_word(file->blocks->adress);
+    //draw_word("\n");
+
+    uint64_t resp = readFile2(file, text, strlen(file->blocks->adress) + 1);
+    // while ( (c = readFile(file, index)) != EOF )
+    // {
+    //     draw_char(c);
+    //     text[index] = c;
+    //     index++;
+    // }
+    // text[index] ='\0';
 }
 
 void thenVerifyTextWasRead(char * textRead)
@@ -105,6 +113,7 @@ void thenVerifyTextWasRead(char * textRead)
     {
         draw_word("Test de Lectura Fallo. \n");
     }
+    while(1);
 }
 
 void deleteDirTest()

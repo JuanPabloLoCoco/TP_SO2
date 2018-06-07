@@ -14,6 +14,7 @@
 #include <prodCons.h>
 #include <prodConsWithPipes.h>
 #include <test.h>
+#include <fileSystem.h>
 
 uint64_t _int80(uint64_t, uint64_t, uint64_t, uint64_t, uint64_t, uint64_t);
 
@@ -40,6 +41,7 @@ void setUpShell()
 /*prints the prompt*/
 void printPrompt()
 {
+	printf("%s / \n", getCurrentDir());
 	printf("$>");
 }
 
@@ -426,26 +428,40 @@ void shell()
 					olvidameVersionSO();
 					break;
 				case CAT:
+					sys_openFile(getCurrentDir(), args , FILEREAD);
+
+					sys_closeFile(getCurrentDir(), args);
+
 					//cat(args);
 					echo(args);
 					break;
 				case CREATE_DIR:
+					sys_createFile(getCurrentDir(),args, DIR);
 					//createDir(args);
 					echo(args);
 					break;
 				case CREATE_FILE:
-					//createFile(args);
-					echo(args);
+					sys_createFile(getCurrentDir(), args, NOT_DIR);
+					//echo(args);
 					break;
 				case CD:
+					printf("%s\n",cd(args));
 					//cd(args);
-					echo(args);
+					//echo(args);
 					break;
 				case LS:
-					//ls();
-					echo("");
+					listDirectory();
 					break;
 				case WRITE:
+					sys_openFile(getCurrentDir(), fileToWrite , FILEWRITE);
+					int count = strlen(textToWrite);
+					int count2 = sys_writeFile(getCurrentDir(), fileToWrite, textToWrite, count);
+					if (count2 == 0)
+					{
+						printf("Error en escritura de Archivo \n");
+					}
+					sys_closeFile(getCurrentDir(), fileToWrite);
+
 					//write(textToWrite, fileToWrite);
 					echo(textToWrite);
 					break;
