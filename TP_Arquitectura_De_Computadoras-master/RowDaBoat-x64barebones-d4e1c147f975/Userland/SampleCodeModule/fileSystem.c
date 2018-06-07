@@ -2,10 +2,21 @@
 #include <file_info.h>
 #include <syscalls.h>
 #include <stdlib.h>
+#include <defs.h>
+
+int a = 0;
+char * resp = NULL;
 
 char * getCurrentDir()
 {
-    return cd(".");
+    if (a == 0)
+    {
+      resp = (char *) malloc(128);
+      a = 1;
+    }
+    cd(".",resp);
+    printf("%s\n", resp);
+    return resp;
 }
 
 void listDirectory()

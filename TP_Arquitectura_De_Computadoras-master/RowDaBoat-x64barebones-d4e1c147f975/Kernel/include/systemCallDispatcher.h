@@ -67,8 +67,8 @@ uint64_t sys_lockMutex(uint64_t key);
 uint64_t sys_unlockMutex(uint64_t key);
 uint64_t sys_get_mutexes_info(mutex_info * info_array);
 
-uint64_t sys_cd_wr(char * fileName);
-uint64_t sys_cd(uint64_t fileName);
+uint64_t sys_cd_wr(char * fileName, char * resp);
+uint64_t sys_cd(uint64_t fileName, uint64_t resp);
 uint64_t sys_mkdir(uint64_t name);
 uint64_t sys_openFile(uint64_t path, uint64_t name ,uint64_t state);
 

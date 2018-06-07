@@ -205,9 +205,9 @@ int semaphore_close(int key)
   return _int80(38, key, 0, 0, 0, 0);
 }
 
-char * cd( char * pathName)
+int cd( char * pathName, char * resp)
 {
-  return (char *)_int80(38,(uint64_t) pathName, 0, 0, 0, 0);
+  return (int)_int80(38,(uint64_t) pathName, (uint64_t) resp, 0, 0, 0);
 }
 
 int sys_createFile(char * path, char * fileName, uint64_t isDir)

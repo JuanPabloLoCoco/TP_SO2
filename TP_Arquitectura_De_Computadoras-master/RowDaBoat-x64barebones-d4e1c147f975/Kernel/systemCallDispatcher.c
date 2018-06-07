@@ -143,7 +143,7 @@ uint64_t systemCallDispatcher(uint64_t rax, uint64_t rdi, uint64_t rsi, uint64_t
 				result = sys_closeSemaphore(rsi);
 				break;
 			case 39:
-				result = sys_cd(rsi);
+				result = sys_cd(rsi,rdi);
 				break;
 			case 40:
 				result = sys_createFile(rsi, rdi, rdx);
@@ -492,20 +492,23 @@ uint64_t sys_get_mutexes_info(mutex_info * info_array)
 }
 
 /*------------------------DIRECTORY_SYSTEM ----------------------*/
-uint64_t sys_cd_wr(char * fileName)
+uint64_t sys_cd_wr(char * fileName, char * resp)
 {
-	file * resp = changeDirectory(fileName);
-	if (resp == NULL)
+	file * respF = changeDirectory(fileName);
+
+	if (respF == NULL)
 	{
 		return "/home";
 	}
-	char ans[128];
-	return (uint64_t) pathName(resp, ans);
+
+	draw_word(respF->name);
+	draw_word("\n");
+	return (uint64_t) pathName(respF, resp);
 }
 
-uint64_t sys_cd(uint64_t fileName)
+uint64_t sys_cd(uint64_t fileName, uint64_t resp)
 {
-	return sys_cd_wr((char *) fileName);
+	return sys_cd_wr((char *) fileName, (char *) resp);
 }
 
 uint64_t sys_createFile(uint64_t path, uint64_t name, uint64_t isDir)

@@ -71,7 +71,6 @@ file * createFile(char * name , file * father, uint64_t isDir)
     }
     if (resp > 0 )
     {
-        draw_word("Elimina file creado\n");
         buddyFree(new_file);
         //deleteFile(new_file);
         return NULL;
@@ -343,9 +342,6 @@ uint64_t readFile2(file * f, char * buffer, uint64_t count)
       return EOF;
   }
   //
-  draw_word("Texto a leer = ");
-  draw_word(currentBlock->adress);
-  draw_word("\n");
   strcpy(buffer, currentBlock->adress, count);
     //strcpyWithNoIndex(buffer, currentBlock->adress);
 
@@ -477,7 +473,8 @@ char * pathName(file * f, char * resp)
 {
     if (f == home)
     {
-      strcpyWithNoIndex(resp,"/home");
+      strcpy(resp, "/home", MAX_FILE_NAME);
+      //strcpyWithNoIndex(resp,"/home");
       return resp;
     }
 

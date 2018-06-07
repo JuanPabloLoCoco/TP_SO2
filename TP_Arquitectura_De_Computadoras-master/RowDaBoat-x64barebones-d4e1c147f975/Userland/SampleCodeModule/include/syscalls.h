@@ -92,7 +92,7 @@ int get_mutexes_info(mutex_info info_array[]);
 
 int semaphore_close(int key);
 
-char * cd( char * pathName);
+int cd( char * pathName, char * resp);
 
 int sys_createFile(char * path, char * fileName, uint64_t isDir);
 
