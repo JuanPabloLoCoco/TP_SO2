@@ -15,6 +15,7 @@
 #include <process.h>
 #include <init.h>
 #include <idtLoader.h>
+#include <file.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -107,7 +108,8 @@ int main()
 	initialize_memory_allocator_mutex();
 	draw_word("Memory Allocator Iniciado \n");
 
-
+	initFileSystem();
+	draw_word("File System Iniciado \n");
 
 	sys_exec((uint64_t)init, 0,"init");
 	while(1);

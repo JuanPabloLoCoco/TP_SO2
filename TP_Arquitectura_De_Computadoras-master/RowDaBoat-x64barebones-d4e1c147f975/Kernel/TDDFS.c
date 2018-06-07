@@ -94,7 +94,7 @@ void whenFileIsRead(file * file, char * text)
 
 void thenVerifyTextWasRead(char * textRead)
 {
-    if ( strcmp(testRead, testText) == 0 )
+    if (strcmp(testRead, testText) == 0)
     {
         draw_word(" Test de Lectura fue exitoso \n");
     }
