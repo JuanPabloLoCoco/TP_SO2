@@ -25,6 +25,7 @@ char fileToWrite[COMMANDS_MAX_ARGS+1];
 int functionArgs[MAX_QUADRATIC_INTS];
 int width = 0;
 int height = 0;
+char * pathRes;
 
 static int ps();
 
@@ -156,33 +157,33 @@ int getCommands()
 		{
 			return PROD_CONS;
 		}
-		else if(strcmp(command, "cat"))
-		{
-			return CAT;
-		}
-		else if(strcmp(command, "mkdir"))
-		{
-			return CREATE_DIR;
-		}
-		else if(strcmp(command, "mkfile"))
-		{
-			return CREATE_FILE;
-		}
-		else if(strcmp(command, "cd"))
-		{
-			return CD;
-		}
-		else if(strcmp(command, "ls"))
-		{
-			return LS;
-		}
-		else if(strcmp(command, "write"))
-		{
-			if(getTextAndFilename())
-				return WRITE;
-			else
-				return COMMANDS_QUANTITY;
-		}
+		// else if(strcmp(command, "cat"))
+		// {
+		// 	return CAT;
+		// }
+		// else if(strcmp(command, "mkdir"))
+		// {
+		// 	return CREATE_DIR;
+		// }
+		// else if(strcmp(command, "mkfile"))
+		// {
+		// 	return CREATE_FILE;
+		// }
+		// else if(strcmp(command, "cd"))
+		// {
+		// 	return CD;
+		// }
+		// else if(strcmp(command, "ls"))
+		// {
+		// 	return LS;
+		// }
+		// else if(strcmp(command, "write"))
+		// {
+		// 	if(getTextAndFilename())
+		// 		return WRITE;
+		// 	else
+		// 		return COMMANDS_QUANTITY;
+		// }
 		else if(strcmp(command, "olvidame"))
 		{
 			return PROD_CONS_PIPES;
@@ -427,44 +428,47 @@ void shell()
 					putchar('\n');
 					olvidameVersionSO();
 					break;
-				case CAT:
-					sys_openFile(getCurrentDir(), args , FILEREAD);
-
-					sys_closeFile(getCurrentDir(), args);
-
-					//cat(args);
-					echo(args);
-					break;
-				case CREATE_DIR:
-					sys_createFile(getCurrentDir(),args, DIR);
-					//createDir(args);
-					echo(args);
-					break;
-				case CREATE_FILE:
-					sys_createFile(getCurrentDir(), args, NOT_DIR);
-					//echo(args);
-					break;
-				case CD:
-					printf("%s\n",cd(args));
-					//cd(args);
-					//echo(args);
-					break;
-				case LS:
-					listDirectory();
-					break;
-				case WRITE:
-					sys_openFile(getCurrentDir(), fileToWrite , FILEWRITE);
-					int count = strlen(textToWrite);
-					int count2 = sys_writeFile(getCurrentDir(), fileToWrite, textToWrite, count);
-					if (count2 == 0)
-					{
-						printf("Error en escritura de Archivo \n");
-					}
-					sys_closeFile(getCurrentDir(), fileToWrite);
-
-					//write(textToWrite, fileToWrite);
-					echo(textToWrite);
-					break;
+				// case CAT:
+				// 	sys_openFile(getCurrentDir(), args , FILEREAD);
+				//
+				// 	sys_closeFile(getCurrentDir(), args);
+				//
+				// 	//cat(args);
+				// 	echo(args);
+				// 	break;
+				// case CREATE_DIR:
+				// 	sys_createFile(getCurrentDir(),args, DIR);
+				// 	//createDir(args);
+				// 	echo(args);
+				// 	break;
+				// case CREATE_FILE:
+				// 	sys_createFile(getCurrentDir(), args, NOT_DIR);
+				// 	//echo(args);
+				// 	break;
+				// case CD:
+				// 	pathRes = (char *) malloc(128);
+				// 	cd(args, pathRes);
+				// 	printf("%s\n",pathRes);
+				// 	freeMemory(pathRes);
+				// 	//cd(args);
+				// 	//echo(args);
+				// 	break;
+				// case LS:
+				// 	listDirectory();
+				// 	break;
+				// case WRITE:
+				// 	sys_openFile(getCurrentDir(), fileToWrite , FILEWRITE);
+				// 	int count = strlen(textToWrite);
+				// 	int count2 = sys_writeFile(getCurrentDir(), fileToWrite, textToWrite, count);
+				// 	if (count2 == 0)
+				// 	{
+				// 		printf("Error en escritura de Archivo \n");
+				// 	}
+				// 	sys_closeFile(getCurrentDir(), fileToWrite);
+				//
+				// 	//write(textToWrite, fileToWrite);
+				// 	echo(textToWrite);
+				// 	break;
 			}
 		}
 		printPrompt();

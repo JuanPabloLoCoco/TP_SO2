@@ -20,8 +20,7 @@ void init() {
 	initialize_semaphore();
 	initialize_process_mutex();
 	initIPC();
-	//runFStest();
-
+	//runFStest();	
 	_sti();
 
 

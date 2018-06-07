@@ -16,11 +16,11 @@ void help()
 	printf("   freeExample: allocation-free-allocation and checl if the address is the same\n\n");
 	printf("   ps: create and ps an address\n\n");
 	printf("   prodCons: test prodCons\n\n");
-	printf("   cat [fileName]: reads a file with name [fileName]\n\n");
-	printf("   mkdir [dirName]: creates a directory with name [dirName]\n\n");
-	printf("   mkfile [fileName]: creates a file with name [fileName]\n\n");
-	printf("   cd [dirName]: changes de current directory to directory [dirName]\n\n");
-	printf("   ls: prints the content of the current directory\n\n");
-	printf("   write \"[text]\">[fileName]: writes the text [text] in the file [fileName]\n\n");
+	// printf("   cat [fileName]: reads a file with name [fileName]\n\n");
+	// printf("   mkdir [dirName]: creates a directory with name [dirName]\n\n");
+	// printf("   mkfile [fileName]: creates a file with name [fileName]\n\n");
+	// printf("   cd [dirName]: changes de current directory to directory [dirName]\n\n");
+	// printf("   ls: prints the content of the current directory\n\n");
+	// printf("   write \"[text]\">[fileName]: writes the text [text] in the file [fileName]\n\n");
 	printf("   olvidame: test prodCons with pipes\n\n");
 }
